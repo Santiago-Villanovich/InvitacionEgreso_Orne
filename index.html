@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>¡Me recibí! · Invitación</title>
+<meta name="description" content="Abrí tu sobre de figuritas y confirmá tu asistencia a la fiesta de egreso.">
+<meta property="og:title" content="¡Me recibí! Estás invitado/a 💌">
+<meta property="og:description" content="Abrí tu sobre de figuritas y confirmá tu asistencia.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#f7f0e3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bagel+Fat+One&family=Bungee&family=Caveat:wght@500;700&family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,800&family=Rubik+Mono+One&family=Shrikhand&family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* ---------- hero ---------- */
+  .hero { position: relative; min-height: 100svh; display: grid; place-items: center; text-align: center; overflow: hidden; padding: 72px 16px 56px; }
+  .burst {
+    position: absolute; inset: -20%;
+    background: repeating-conic-gradient(from 3deg at 50% 52%,
+      #e9a3b8 0 5deg, #f6d38b 0 10deg, #9fc7b2 0 15deg, #c7b4e3 0 20deg, #f3b28f 0 25deg, #a9c9e8 0 30deg, #f7f0e3 0 33deg);
+    opacity: .55;
+    -webkit-mask-image: radial-gradient(circle at 50% 52%, transparent 0 22%, #000 48%, transparent 78%);
+            mask-image: radial-gradient(circle at 50% 52%, transparent 0 22%, #000 48%, transparent 78%);
+    animation: spin 120s linear infinite;
+  }
+  @keyframes spin { to { rotate: 360deg; } }
+  .hero .chain { position: absolute; top: 0; left: 0; right: 0; }
+  .hero-inner { position: relative; z-index: 2; max-width: 900px; }
+  .greet { font-family: var(--hand); font-size: clamp(1.6rem, 5vw, 2.3rem); margin: 0 0 .2em; color: var(--hot); rotate: -3deg; }
+  .hero h1 { font-weight: 400; font-size: clamp(2.6rem, 12vw, 6.6rem); margin: 0; line-height: 1.1; }
+  .hero .name { font-size: clamp(1.7rem, 7vw, 3.6rem); margin: .25em 0 .5em; }
+  .strip {
+    display: inline-block; background: #fff; padding: .55em 1.6em; font-family: 'Special Elite', monospace; font-size: clamp(1rem, 3.4vw, 1.3rem);
+    rotate: -2deg; box-shadow: var(--shadow);
+    clip-path: polygon(0 8%, 6% 0, 14% 6%, 24% 0, 36% 5%, 50% 0, 62% 6%, 74% 1%, 86% 6%, 100% 0, 98% 50%, 100% 100%, 88% 94%, 76% 100%, 62% 95%, 50% 100%, 36% 94%, 22% 100%, 10% 95%, 0 100%, 2% 50%);
+  }
+  .scroll-hint { margin-top: 2.2rem; font-weight: 600; color: var(--ink-2); animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 50% { translate: 0 6px; } }
+  .hero-pol { position: absolute; z-index: 1; width: clamp(110px, 18vw, 200px); background: #fff; padding: 8px 8px 30px; box-shadow: var(--shadow); }
+  .hero-pol .ph { aspect-ratio: 1; font-size: 1rem; }
+  .hero-pol .tape { top: -12px; left: 50%; margin-left: -46px; rotate: -4deg; }
+  .disco {
+    position: absolute; z-index: 1; width: clamp(80px, 13vw, 140px); aspect-ratio: 1; border-radius: 50%;
+    background:
+      radial-gradient(circle at 34% 30%, rgba(255,255,255,.95) 0 6%, transparent 20%),
+      repeating-linear-gradient(0deg, rgba(40,40,50,.28) 0 1px, transparent 1px 11px),
+      repeating-linear-gradient(90deg, rgba(40,40,50,.28) 0 1px, transparent 1px 11px),
+      radial-gradient(circle at 40% 35%, #fafafa, #b7b4c4 55%, #5a5766);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,.4);
+  }
+  .disco::before { content: ""; position: absolute; left: 50%; bottom: 100%; height: 60vh; border-left: 2px solid rgba(42,33,48,.4); }
+  .disco::after { content: "✦"; position: absolute; top: 18%; right: 14%; color: #fff; font-size: 1.4em; animation: twinkle 1.6s ease-in-out infinite; }
+  @keyframes twinkle { 50% { opacity: .2; scale: .6; } }
+
+  .ph {
+    aspect-ratio: 4/5; display: grid; place-items: center; align-content: center; gap: .2em; text-align: center; padding: 10px;
+    background: repeating-linear-gradient(45deg, var(--c, var(--pink)) 0 14px, color-mix(in srgb, var(--c, var(--pink)) 78%, #fff) 14px 28px);
+    color: #fff; font-family: var(--hand); font-size: 1.3rem; line-height: 1.1; text-shadow: 0 1px 2px rgba(0,0,0,.25);
+  }
+  .ph b { font-size: 1.8em; line-height: 1; }
+
+  /* ---------- timeline ---------- */
+  .timeline { position: relative; max-width: 1000px; margin: 0 auto; padding: 12vh 16px 6vh; }
+  .tl-line { position: absolute; left: 50%; top: 28vh; bottom: 10vh; border-left: 3px dashed var(--hot); opacity: .45; }
+  .tl-item { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 6vw, 72px); align-items: center; margin: 12vh 0; }
+  .tl-item > .star.dot { left: 50%; top: 50%; margin: -17px 0 0 -17px; --s: 34px; --c: var(--hot); }
+  .tl-item.alt .polaroid { order: 2; }
+  .polaroid { position: relative; justify-self: center; width: min(100%, 300px); background: #fff; padding: 12px 12px 54px; box-shadow: var(--shadow); rotate: var(--rot); translate: 0 var(--py, 0); }
+  .polaroid img { aspect-ratio: 4/5; object-fit: cover; width: 100%; }
+  .polaroid figcaption { position: absolute; left: 0; right: 0; bottom: 10px; text-align: center; font-family: var(--hand); font-size: 1.6rem; }
+  .polaroid .tape { top: -13px; left: 50%; margin-left: -46px; rotate: var(--tr, -3deg); }
+  .tl-note { position: relative; background: #fff8ec; padding: 22px 24px 24px; border-radius: 4px; box-shadow: var(--shadow); rotate: var(--rot); translate: 0 var(--py, 0); max-width: 380px; }
+  .tl-item.alt .tl-note { justify-self: end; }
+  .tl-note::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(transparent 0 27px, rgba(74,168,255,.22) 27px 28px); border-radius: inherit; pointer-events: none; }
+  .tl-year { font-size: 1.9rem; display: block; margin-bottom: .2em; }
+  .tl-note h3 { font-family: 'Shrikhand', serif; font-weight: 400; font-size: 1.6rem; margin: 0 0 .25em; color: var(--hot); }
+  .tl-note p { margin: 0; position: relative; }
+  .tl-item .star.float { translate: 0 var(--py, 0); }
+  .reveal { opacity: 0; transform: translateY(46px) scale(.96); transition: opacity .8s, transform .9s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- sobre ---------- */
+  .pack-sec { padding: 10vh 16px 8vh; text-align: center; position: relative; }
+  .stage { position: relative; min-height: calc(min(72vw, 280px) * 1.45 + 30px); display: grid; place-items: center; margin: 1rem 0; }
+  .pack { position: relative; width: min(62vw, 240px); aspect-ratio: 5/7.8; border: 0; padding: 0; background: none; cursor: pointer; animation: wobble 2.6s ease-in-out infinite; }
+  @keyframes wobble { 0%, 100% { rotate: -2deg; } 50% { rotate: 2deg; translate: 0 -6px; } }
+  .pack-top {
+    position: absolute; top: 0; left: 0; right: 0; height: 12%; border: 2px solid var(--ink); border-bottom: 2px dashed var(--ink); border-radius: 6px 6px 0 0;
+    background: repeating-linear-gradient(90deg, #ffd23f 0 6px, #ffbf1f 6px 9px);
+    transition: transform .6s cubic-bezier(.3,.6,.3,1), opacity .6s;
+  }
+  .pack-body {
+    position: absolute; inset: 12% 0 0; border: 2px solid var(--ink); border-top: 0; border-radius: 0 0 12px 12px; overflow: hidden;
+    background: linear-gradient(160deg, #ff6fae, #c77dff 40%, #4aa8ff 70%, #ff6fae);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem; color: #fff; padding: 12px;
+    box-shadow: 6px 6px 0 var(--ink);
+    transition: transform .5s .25s, opacity .5s .25s;
+  }
+  .pack-body::before { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.65) 45%, transparent 60%); translate: -100% 0; animation: shine 3.2s ease-in-out infinite; }
+  @keyframes shine { 60%, 100% { translate: 100% 0; } }
+  .pack-brand { font-family: var(--display); font-size: .78rem; letter-spacing: .12em; background: var(--ink); padding: .3em .7em; border-radius: 999px; position: relative; }
+  .pack-title { font-size: 1.55rem; position: relative; }
+  .pack-count { font-family: 'Shrikhand', serif; font-size: 1.15rem; position: relative; text-shadow: 0 2px 0 rgba(0,0,0,.2); }
+  .pack-count b { display: block; font-size: 3.4rem; line-height: .9; }
+  .pack .star { --c: #fff; opacity: .9; }
+  .pack.open { animation: none; pointer-events: none; }
+  .pack.open .pack-top { transform: translate(60px, -120px) rotate(28deg); opacity: 0; }
+  .pack.open .pack-body { transform: translateY(60px) scale(.9); opacity: 0; }
+  .hint { min-height: 1.6em; font-weight: 700; color: var(--ink-2); margin: .5rem 0 1rem; }
+
+  .deck { position: relative; width: min(72vw, 280px); aspect-ratio: 5/7; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+  .card { position: absolute; inset: 0; perspective: 1200px; transition: transform .45s cubic-bezier(.3,.7,.3,1), opacity .45s; cursor: grab; }
+  .card:nth-last-child(2) { transform: translate(10px, 8px) rotate(4deg); }
+  .card:nth-last-child(n+3) { transform: translate(-10px, 12px) rotate(-4deg); }
+  .card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.3,.7,.3,1); transform: rotateY(180deg); }
+  .card.flip .card-inner { transform: none; }
+  .card-front, .card-back { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .card-back {
+    transform: rotateY(180deg); border-radius: 18px; border: 6px solid #fff; box-shadow: var(--shadow);
+    background: radial-gradient(circle, rgba(255,255,255,.35) 2px, transparent 3px) 0 0/22px 22px, linear-gradient(160deg, var(--hot), var(--lilac));
+    display: grid; place-items: center; color: #fff; font-family: var(--display); font-size: 1.3rem; letter-spacing: .1em;
+  }
+  .deck-bar { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 18px; }
+  .counter { font-family: var(--display); font-size: 1.1rem; }
+
+  /* ---------- figurita ---------- */
+  .card-front, .fig-btn, dialog.zoom { container-type: inline-size; }
+  .fig { position: relative; width: 100%; aspect-ratio: 5/7; background: #fff; border-radius: 7cqw; padding: 5cqw; display: flex; flex-direction: column; box-shadow: var(--shadow); overflow: hidden; text-align: center; }
+  .fig-art { position: relative; flex: 1; border-radius: 4cqw; overflow: hidden; display: grid; }
+  .fig-art img { width: 100%; height: 100%; object-fit: cover; }
+  .fig-art .ph { aspect-ratio: auto; font-size: 9cqw; }
+  .fig-n { position: absolute; z-index: 2; top: 2.5cqw; left: 2.5cqw; width: 18cqw; height: 18cqw; border-radius: 50%; background: var(--ink); color: var(--yellow); display: grid; place-items: center; font-family: var(--display); font-size: 8cqw; border: 1.2cqw solid #fff; }
+  .fig-name { margin-top: 4cqw; background: var(--c2, var(--hot)); color: #fff; font-family: var(--display); font-size: 7cqw; line-height: 1.1; padding: 3cqw 2cqw; border-radius: 3cqw; text-transform: uppercase; }
+  .fig--dato .fig-art { background: radial-gradient(circle, rgba(255,255,255,.5) 1.2cqw, transparent 1.5cqw) 0 0/9cqw 9cqw, var(--c, var(--yellow)); align-content: center; justify-items: center; gap: 2cqw; padding: 6cqw; color: var(--ink); }
+  .fig-ico { font-size: 22cqw; line-height: 1; }
+  .fig-val { font-weight: 800; font-size: 8.5cqw; line-height: 1.15; }
+  .fig-val small { display: block; font-weight: 600; font-size: .72em; margin-top: 1.5cqw; }
+  .fig--shiny::after { content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; background: linear-gradient(115deg, transparent 20%, #ff6fae 35%, #ffd23f 45%, #4cc38a 55%, #4aa8ff 65%, transparent 80%) 0 0/250% 100%; animation: holo 3.5s linear infinite; }
+  @keyframes holo { to { background-position: -250% 0; } }
+
+  /* ---------- álbum ---------- */
+  .album-sec { padding: 4vh 16px 10vh; text-align: center; }
+  .album {
+    position: relative; max-width: 900px; margin: 0 auto; border: 2px solid var(--ink); border-radius: 20px; padding: clamp(16px, 4vw, 36px); box-shadow: 6px 6px 0 var(--ink);
+    background-color: #fff4f8;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,111,174,.16) 0 18px, transparent 18px 48px),
+      repeating-linear-gradient(90deg, rgba(74,168,255,.13) 0 18px, transparent 18px 48px),
+      repeating-linear-gradient(90deg, rgba(255,210,63,.2) 0 3px, transparent 3px 24px);
+  }
+  .album-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 18px; }
+  .album-head h2 { margin: 0; font-weight: 400; font-size: clamp(1.6rem, 5vw, 2.4rem); }
+  .album-progress { font-family: var(--display); background: var(--ink); color: var(--yellow); padding: .3em .8em; border-radius: 999px; font-size: .85rem; }
+  .pages { display: grid; gap: clamp(16px, 4vw, 40px); }
+  .page { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(12px, 3vw, 22px); }
+  .slot { position: relative; aspect-ratio: 5/7; border: 2.5px dashed rgba(42,33,48,.3); border-radius: 14px; display: grid; place-items: center; background: rgba(255,255,255,.6); }
+  .slot-n { font-family: var(--display); font-size: 1.8rem; color: rgba(42,33,48,.25); }
+  .fig-btn { position: absolute; inset: 0; display: block; border: 0; padding: 0; background: none; cursor: zoom-in; rotate: var(--r); }
+  .fig-btn .fig { height: 100%; }
+  .fig-btn.stick { animation: stick .6s cubic-bezier(.2,1.5,.4,1) backwards; animation-delay: var(--d); }
+  @keyframes stick { from { transform: scale(1.6) translateY(-40px) rotate(12deg); opacity: 0; } }
+  @media (min-width: 760px) {
+    .pages { grid-template-columns: 1fr 1fr; }
+    .pages::before { content: ""; position: absolute; top: 12px; bottom: 12px; left: 50%; width: 30px; margin-left: -15px; background: linear-gradient(90deg, transparent, rgba(42,33,48,.12), transparent); pointer-events: none; }
+  }
+  .album-actions { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  dialog.zoom { border: 0; padding: 0; background: none; width: min(82vw, 340px); overflow: visible; }
+  dialog.zoom::backdrop { background: rgba(42,33,48,.6); backdrop-filter: blur(3px); }
+
+  /* ---------- info ---------- */
+  .info-sec { padding: 10vh 16px; }
+  .info-grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); max-width: 1000px; margin: 0 auto; }
+  .info-card { position: relative; background: #fff; border: 2px solid var(--ink); border-radius: 16px; padding: 24px; box-shadow: 4px 4px 0 var(--ink); rotate: var(--r, 0deg); }
+  .info-card h3 { margin: 0 0 .5em; font-family: var(--display); font-weight: 400; font-size: 1rem; letter-spacing: .06em; color: var(--hot); }
+  .info-card .big { font-family: 'Shrikhand', serif; font-size: 1.7rem; line-height: 1.15; margin: 0 0 .3em; }
+  .info-card p { margin: 0 0 .8em; }
+  .info-card.map { grid-column: 1 / -1; }
+  .map-frame { width: 100%; height: 260px; border: 2px solid var(--ink); border-radius: 12px; margin: 8px 0 14px; display: block; }
+  .count { display: flex; gap: 10px; margin: 12px 0 16px; }
+  .count div { flex: 1; text-align: center; background: var(--rose); border-radius: 10px; padding: 8px 4px; }
+  .count b { display: block; font-family: var(--display); font-size: 1.6rem; line-height: 1.1; }
+  .count span { font-size: .78rem; font-weight: 600; }
+  .swatches { display: flex; gap: 6px; margin-top: 10px; }
+  .swatches i { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--ink); background: var(--c); }
+
+  /* ---------- confirmación ---------- */
+  .rsvp-sec { padding: 6vh 16px 14vh; }
+  .note {
+    position: relative; max-width: 640px; margin: 0 auto; padding: 40px 24px 32px 64px; rotate: -.6deg; box-shadow: var(--shadow);
+    background: #fffdf6 repeating-linear-gradient(transparent 0 33px, rgba(74,168,255,.22) 33px 34px);
+  }
+  .note::before { content: ""; position: absolute; top: 0; bottom: 0; left: 44px; border-left: 2px solid rgba(236,28,127,.35); }
+  .note > .tape { top: -12px; left: 50%; margin-left: -46px; background: rgba(255,111,174,.55); }
+  .note h2 { font-family: 'Shrikhand', serif; font-weight: 400; font-size: clamp(1.6rem, 5vw, 2.2rem); margin: 0 0 .2em; color: var(--hot); }
+  .member { border: 0; margin: 0; padding: 14px 0; border-bottom: 1px dashed var(--line); display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+  .member legend { float: left; font-family: var(--hand); font-size: 1.8rem; font-weight: 700; line-height: 1; min-width: 5ch; margin-right: 4px; padding: 0; }
+  .seg { display: inline-flex; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden; background: #fff; }
+  .seg label { position: relative; }
+  .seg input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .seg span { display: block; padding: .42em 1em; font-weight: 700; font-size: .92rem; }
+  .seg label + label span { border-left: 2px solid var(--ink); }
+  .seg input:checked + span { background: var(--hot); color: #fff; }
+  .seg input[value="no"]:checked + span { background: var(--ink); }
+  .seg input:focus-visible + span { outline: 3px solid var(--blue); outline-offset: -3px; }
+  .rsvp-msg { margin: 18px 0 20px; }
+  .rsvp-msg label { font-family: var(--hand); font-size: 1.5rem; font-weight: 700; }
+  .summary { list-style: none; padding: 0; margin: 12px 0 18px; }
+  .summary li { font-family: var(--hand); font-size: 1.6rem; line-height: 1.5; }
+  .summary small { font-family: var(--font); font-size: .85rem; color: var(--ink-2); }
+  .err { color: #c0003d; font-weight: 700; }
+
+  .fab { position: fixed; z-index: 40; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); transition: opacity .3s, translate .3s; }
+  .fab.off { opacity: 0; translate: 0 20px; pointer-events: none; }
+  footer { text-align: center; padding: 32px 16px 48px; color: var(--ink-2); font-size: .9rem; }
+
+  @media (max-width: 700px) {
+    .hero { padding-bottom: 170px; }
+    .hero-pol { width: 104px; }
+    .tl-line { left: 22px; }
+    .tl-item { grid-template-columns: 1fr; padding-left: 34px; gap: 22px; margin: 9vh 0; }
+    .tl-item.alt .polaroid { order: 0; }
+    .tl-item > .star.dot { left: 22px; top: 40px; }
+    .tl-item.alt .tl-note { justify-self: start; }
+    .polaroid { justify-self: start; width: min(88%, 280px); }
+    .note { padding: 36px 18px 28px 48px; }
+    .note::before { left: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="burst"></div>
+  <div class="chain" id="chain"></div>
+  <div class="disco" style="top:14%;right:8%" data-speed="-.25"></div>
+  <figure class="hero-pol" style="left:4%;bottom:12%;rotate:-8deg" data-speed=".18"><span class="tape"></span><div class="ph" style="--c:#ff8c42"><b>📷</b>foto de chiquita</div></figure>
+  <figure class="hero-pol" style="right:5%;bottom:6%;rotate:7deg" data-speed=".3"><span class="tape"></span><div class="ph" style="--c:#4aa8ff"><b>📷</b>con la toga</div></figure>
+  <span class="star" style="--s:38px;--c:var(--yellow);top:22%;left:12%" data-speed=".4"></span>
+  <span class="star" style="--s:22px;--c:var(--pink);top:12%;left:40%" data-speed=".2"></span>
+  <span class="star" style="--s:30px;--c:var(--green);top:66%;right:22%" data-speed="-.3"></span>
+  <span class="star" style="--s:18px;--c:var(--lilac);top:40%;right:4%" data-speed=".5"></span>
+  <div class="hero-inner">
+    <p class="greet" id="greet">¡Hola!</p>
+    <h1 data-ransom="¡ME RECIBÍ!"></h1>
+    <p class="name" id="heroName"></p>
+    <p class="strip" id="heroCarrera"></p>
+    <p class="scroll-hint">Deslizá para ver la historia ↓</p>
+  </div>
+</header>
+
+<main>
+  <section class="timeline" id="historia" aria-label="Historia">
+    <h2 class="sec-title" data-ransom="De salita a licenciada"></h2>
+    <div class="tl-line"></div>
+    <div id="tlItems"></div>
+  </section>
+
+  <section class="pack-sec" id="sobre">
+    <h2 class="sec-title" data-ransom="¡Te llegó un sobre!"></h2>
+    <p class="sec-sub muted" id="packSub">Abrilo y mirá las figuritas una por una.</p>
+    <div class="stage">
+      <button class="pack" id="pack" aria-label="Abrir el sobre de figuritas">
+        <span class="pack-top"></span>
+        <span class="pack-body">
+          <span class="star" style="--s:16px;top:10%;left:12%"></span>
+          <span class="star" style="--s:12px;bottom:14%;right:14%"></span>
+          <span class="pack-brand">ÁLBUM OFICIAL</span>
+          <span class="pack-title" data-ransom="EGRESO 2026"></span>
+          <span class="pack-count"><b id="packN">8</b>figuritas</span>
+        </span>
+      </button>
+      <div class="deck" id="deck" hidden></div>
+    </div>
+    <p class="hint" id="hint" aria-live="polite">Tocá el sobre para abrirlo</p>
+    <div class="deck-bar" id="deckBar" hidden>
+      <span class="counter" id="counter">1 / 8</span>
+      <button class="btn sm alt" id="nextBtn">Siguiente →</button>
+    </div>
+    <button class="btn" id="toAlbum" hidden>Pegarlas en el álbum ✨</button>
+  </section>
+
+  <section class="album-sec" id="album" hidden>
+    <div class="album">
+      <div class="album-head">
+        <h2 data-ransom="Mi álbum"></h2>
+        <span class="album-progress" id="albumProgress"></span>
+      </div>
+      <div class="pages" id="pages"></div>
+    </div>
+    <div class="album-actions">
+      <a class="btn" href="#info">Ver toda la info ↓</a>
+      <button class="btn alt" id="replay">Abrir el sobre otra vez</button>
+    </div>
+  </section>
+
+  <section class="info-sec" id="info">
+    <h2 class="sec-title" data-ransom="Toda la info"></h2>
+    <p class="sec-sub muted">Guardá este link: acá vas a encontrar siempre los datos de la fiesta.</p>
+    <div class="info-grid" id="infoGrid"></div>
+  </section>
+
+  <section class="rsvp-sec" id="confirmar">
+    <div class="note">
+      <span class="tape"></span>
+      <h2>Nota para firmar</h2>
+      <div id="rsvpBox" aria-live="polite"><p class="muted">Buscando tu invitación…</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>Hecho con 💗, papel y cinta. <a href="#top">Volver arriba</a></footer>
+
+<a class="btn fab off" id="fab" href="#confirmar">Confirmar 💌</a>
+<dialog class="zoom" id="zoom" aria-label="Figurita"></dialog>
+
+<script src="config.js"></script>
+<script src="js/common.js"></script>
+<script>
+(() => {
+  const E = CONFIG.evento;
+  const FIGS = CONFIG.figuritas;
+  const slug = (new URLSearchParams(location.search).get('inv') || '').trim().toLowerCase();
+  const COLORS = ['#ff6fae', '#4aa8ff', '#ff8c42', '#4cc38a', '#a98bff', '#ffd23f', '#ec1c7f'];
+  const state = { invitado: null, respuesta: null, editing: false };
+  const seenKey = 'sobre-abierto';
+
+  // ---------- hero ----------
+  $('#chain').innerHTML = Array.from({ length: 60 }, (_, i) => `<i style="--c:${COLORS[i % COLORS.length]};--r:${i % 2 ? 8 : -8}deg"></i>`).join('');
+  $('#heroName').dataset.ransom = E.homenajeada;
+  $('#heroCarrera').textContent = E.carrera;
+  ransomAll();
+
+  // ---------- timeline ----------
+  const ph = (label, i) => `<div class="ph" style="--c:${COLORS[i % COLORS.length]}"><b>📷</b>${esc(label)}</div>`;
+  $('#tlItems').innerHTML = CONFIG.timeline.map((t, i) => `
+    <article class="tl-item${i % 2 ? ' alt' : ''}">
+      <span class="star dot"></span>
+      <figure class="polaroid reveal" style="--rot:${i % 2 ? 4 : -4}deg" data-speed=".06">
+        <span class="tape" style="--tr:${i % 2 ? 5 : -5}deg"></span>
+        ${t.foto ? `<img src="${esc(t.foto)}" alt="${esc(t.etapa)}" loading="lazy">` : ph('foto · ' + t.etapa, i)}
+        <figcaption>${esc(t.etapa)}</figcaption>
+      </figure>
+      <div class="tl-note reveal" style="--rot:${i % 2 ? -2 : 2}deg" data-speed="-.08">
+        <span class="tl-year" data-ransom="${esc(t.anio)}"></span>
+        <h3>${esc(t.etapa)}</h3>
+        <p>${esc(t.texto)}</p>
+      </div>
+      <span class="star float" style="--s:${18 + (i * 7) % 16}px;--c:${COLORS[(i + 3) % COLORS.length]};top:-6%;${i % 2 ? 'left' : 'right'}:6%" data-speed=".35"></span>
+    </article>`).join('');
+  ransomAll($('#tlItems'));
+
+  // ---------- parallax + reveal ----------
+  const px = $$('[data-speed]');
+  let ticking = false;
+  function parallax() {
+    const vh = innerHeight;
+    for (const el of px) {
+      const r = el.parentElement.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > vh + 200) continue;
+      el.style.setProperty('--py', ((r.top + r.height / 2 - vh / 2) * parseFloat(el.dataset.speed)).toFixed(1) + 'px');
+    }
+    ticking = false;
+  }
+  if (!reducedMotion) {
+    for (const el of px) el.style.translate = '0 var(--py, 0)';
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(parallax); } }, { passive: true });
+    parallax();
+  }
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .2 });
+  $$('.reveal').forEach((el) => io.observe(el));
+
+  // ---------- figuritas ----------
+  const datos = () => ({
+    fecha: { ico: '📅', titulo: 'Cuándo', val: `${esc(E.fechaTexto)}<small>${esc(E.horaTexto)}</small>` },
+    lugar: { ico: '📍', titulo: 'Dónde', val: `${esc(E.lugar)}<small>${esc(E.direccion)}</small>` },
+    dress: { ico: '✨', titulo: 'Dress code', val: esc(E.dressCode) },
+    bebida: { ico: '🥂', titulo: 'Para brindar', val: `¿Traés algo para tomar?<small>gaseosa, vino, cerveza… ¡lo que gustes!</small>` },
+    confirmar: { ico: '💌', titulo: 'Confirmá', val: `antes del<small>${esc(E.confirmarHasta)}</small>` },
+  });
+  function figHTML(f, i) {
+    const c = COLORS[i % COLORS.length];
+    const c2 = COLORS[(i + 2) % COLORS.length];
+    const n = String(i + 1).padStart(2, '0');
+    if (f.tipo === 'dato') {
+      const d = datos()[f.dato];
+      return `<div class="fig fig--dato${f.brillante ? ' fig--shiny' : ''}" style="--c:${c};--c2:${c2}"><span class="fig-n">${n}</span>
+        <div class="fig-art"><span class="fig-ico">${d.ico}</span><span class="fig-val">${d.val}</span></div>
+        <div class="fig-name">${d.titulo}</div></div>`;
+    }
+    return `<div class="fig${f.brillante ? ' fig--shiny' : ''}" style="--c2:${c2}"><span class="fig-n">${n}</span>
+      <div class="fig-art">${f.foto ? `<img src="${esc(f.foto)}" alt="${esc(f.titulo)}">` : ph(f.titulo, i)}</div>
+      <div class="fig-name">${esc(f.titulo)}</div></div>`;
+  }
+
+  // ---------- sobre y mazo ----------
+  const pack = $('#pack'), deck = $('#deck'), hint = $('#hint'), bar = $('#deckBar');
+  $('#packN').textContent = FIGS.length;
+  let seen = 0;
+
+  pack.addEventListener('click', () => {
+    pack.classList.add('open');
+    hint.textContent = '';
+    setTimeout(() => { pack.hidden = true; openDeck(); }, reducedMotion ? 0 : 750);
+  });
+
+  function openDeck() {
+    seen = 0;
+    deck.innerHTML = FIGS.map((f, i) => ({ f, i })).reverse().map(({ f, i }) =>
+      `<div class="card"><div class="card-inner"><div class="card-back">★ EGRESO ★</div><div class="card-front">${figHTML(f, i)}</div></div></div>`).join('');
+    deck.hidden = false;
+    bar.hidden = false;
+    hint.textContent = 'Tocá o deslizá para ver la siguiente';
+    prepTop();
+  }
+  const top = () => deck.lastElementChild;
+  function prepTop() {
+    const c = top();
+    $('#counter').textContent = `${seen + 1} / ${FIGS.length}`;
+    if (c) setTimeout(() => c.classList.add('flip'), reducedMotion ? 0 : 280);
+  }
+  function next(dir = 1) {
+    const c = top();
+    if (!c || c.dataset.gone) return;
+    if (!c.classList.contains('flip')) { c.classList.add('flip'); return; }
+    c.dataset.gone = '1';
+    c.style.transform = `translateX(${dir * 130}vw) rotate(${dir * 35}deg)`;
+    c.style.opacity = '0';
+    setTimeout(() => {
+      c.remove();
+      seen++;
+      if (top()) prepTop(); else finishDeck();
+    }, reducedMotion ? 0 : 420);
+  }
+  function finishDeck() {
+    deck.hidden = true;
+    bar.hidden = true;
+    hint.textContent = '¡Completaste el sobre! 🎉';
+    $('#toAlbum').hidden = false;
+    $('#toAlbum').focus({ preventScroll: true });
+  }
+  $('#nextBtn').addEventListener('click', () => next(1));
+
+  let drag = null;
+  deck.addEventListener('pointerdown', (e) => {
+    const c = top();
+    if (!c || c.dataset.gone) return;
+    drag = { x: e.clientX, dx: 0, c };
+    c.setPointerCapture(e.pointerId);
+    c.style.transition = 'none';
+  });
+  deck.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    drag.dx = e.clientX - drag.x;
+    drag.c.style.transform = `translateX(${drag.dx}px) rotate(${drag.dx / 14}deg)`;
+  });
+  const endDrag = (cancel) => {
+    if (!drag) return;
+    const { c, dx } = drag;
+    drag = null;
+    c.style.transition = '';
+    if (!cancel && Math.abs(dx) < 8) { c.style.transform = ''; next(1); }
+    else if (!cancel && Math.abs(dx) > 70) next(Math.sign(dx));
+    else c.style.transform = '';
+  };
+  deck.addEventListener('pointerup', () => endDrag(false));
+  deck.addEventListener('pointercancel', () => endDrag(true));
+
+  // ---------- álbum ----------
+  const half = Math.ceil(FIGS.length / 2);
+  $('#pages').innerHTML = [FIGS.slice(0, half), FIGS.slice(half)].map((page, p) =>
+    `<div class="page">${page.map((_, j) => `<div class="slot" data-i="${p * half + j}"><span class="slot-n">${p * half + j + 1}</span></div>`).join('')}</div>`).join('');
+
+  function fillAlbum(animate) {
+    $$('.slot').forEach((slot) => {
+      const i = +slot.dataset.i;
+      const rnd = seeded('slot' + i);
+      slot.querySelector('.fig-btn')?.remove();
+      slot.insertAdjacentHTML('beforeend', `<button class="fig-btn${animate ? ' stick' : ''}" style="--r:${(rnd() * 6 - 3).toFixed(1)}deg;--d:${i * 140}ms" data-i="${i}" aria-label="Ver figurita ${i + 1}">${figHTML(FIGS[i], i)}</button>`);
+    });
+    $('#albumProgress').textContent = `${FIGS.length}/${FIGS.length} completo`;
+  }
+  function showAlbum(animate) {
+    $('#sobre').hidden = true;
+    $('#album').hidden = false;
+    fillAlbum(animate);
+    store.set(seenKey, true);
+  }
+  $('#toAlbum').addEventListener('click', () => {
+    showAlbum(true);
+    $('#album').scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+    if (!reducedMotion) setTimeout(confetti, FIGS.length * 140 + 300);
+  });
+  $('#replay').addEventListener('click', () => {
+    $('#album').hidden = true;
+    $('#sobre').hidden = false;
+    $('#toAlbum').hidden = true;
+    pack.hidden = false;
+    pack.classList.remove('open');
+    hint.textContent = 'Tocá el sobre para abrirlo';
+    $('#sobre').scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
+  });
+  const zoom = $('#zoom');
+  $('#pages').addEventListener('click', (e) => {
+    const b = e.target.closest('.fig-btn');
+    if (!b) return;
+    zoom.innerHTML = figHTML(FIGS[+b.dataset.i], +b.dataset.i);
+    zoom.showModal();
+  });
+  zoom.addEventListener('click', () => zoom.close());
+  if (store.get(seenKey)) showAlbum(false);
+
+  // ---------- info ----------
+  let start;
+  const gdate = (d) => d.toISOString().replace(/[-:]|\.\d{3}/g, '');
+  function renderInfo() {
+  start = new Date(E.inicio);
+  const end = new Date(start.getTime() + E.duracionHoras * 3600e3);
+  const calUrl = 'https://calendar.google.com/calendar/render?' + new URLSearchParams({
+    action: 'TEMPLATE', text: `Fiesta de egreso de ${E.homenajeada}`, dates: `${gdate(start)}/${gdate(end)}`, location: `${E.lugar}, ${E.direccion}`,
+  });
+  const mapsDir = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(E.mapsQuery);
+  const mapsEmbed = 'https://www.google.com/maps?output=embed&q=' + encodeURIComponent(E.mapsQuery);
+  $('#infoGrid').innerHTML = `
+    <article class="info-card" style="--r:-1deg">
+      <h3>CUÁNDO</h3>
+      <p class="big">${esc(E.fechaTexto)}</p>
+      <p>${esc(E.horaTexto)}</p>
+      <div class="count" id="count"></div>
+      <a class="btn sm" href="${calUrl}" target="_blank" rel="noopener">Agendar en el calendario</a>
+    </article>
+    <article class="info-card" style="--r:1deg">
+      <h3>DRESS CODE</h3>
+      <p class="big">${esc(E.dressCode)}</p>
+      <div class="swatches"><i style="--c:#ff6fae"></i><i style="--c:#ffd23f"></i><i style="--c:#4aa8ff"></i><i style="--c:#4cc38a"></i><i style="--c:#a98bff"></i></div>
+    </article>
+    <article class="info-card" style="--r:-.5deg">
+      <h3>CONFIRMÁ</h3>
+      <p class="big">Antes del ${esc(E.confirmarHasta)}</p>
+      <p>Así sabemos cuántos vamos a ser 💗</p>
+      <a class="btn sm alt" href="#confirmar">Ir a confirmar</a>
+    </article>
+    <article class="info-card" style="--r:.8deg">
+      <h3>PARA BRINDAR 🥂</h3>
+      <p>${esc(E.bebidas)}</p>
+    </article>
+    <article class="info-card map" style="--r:.4deg">
+      <h3>DÓNDE</h3>
+      <p class="big">${esc(E.lugar)}</p>
+      <p>${esc(E.direccion)}</p>
+      <iframe class="map-frame" src="${mapsEmbed}" loading="lazy" title="Mapa de ${esc(E.lugar)}" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <a class="btn sm" href="${mapsDir}" target="_blank" rel="noopener">Cómo llegar 📍</a>
+    </article>`;
+  tick();
+  }
+  function tick() {
+    const ms = start - Date.now();
+    if (ms <= 0) { $('#count').innerHTML = '<div><b>¡Hoy!</b><span>a festejar</span></div>'; return; }
+    const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60;
+    $('#count').innerHTML = `<div><b>${d}</b><span>días</span></div><div><b>${h}</b><span>horas</span></div><div><b>${m}</b><span>min</span></div>`;
+  }
+  renderInfo();
+  setInterval(tick, 30e3);
+
+  // ---------- confirmación ----------
+  const box = $('#rsvpBox');
+
+  function renderRsvp() {
+    if (!slug || !state.invitado) {
+      box.innerHTML = `<p>Para confirmar usá el <b>link personal</b> que te mandamos por WhatsApp 💌</p><p class="muted">Si lo perdiste, pedíselo a ${esc(E.homenajeada.split(' ')[0])}.</p>`;
+      return;
+    }
+    const { familia, miembros } = state.invitado;
+    const r = state.respuesta;
+    if (r && !state.editing) {
+      const van = r.miembros.filter((m) => m.asiste).length;
+      box.innerHTML = `
+        <p>${van ? `¡Genial, ${esc(familia)}! Los esperamos 🎉` : `Gracias por avisar, ${esc(familia)}. ¡Los vamos a extrañar!`}</p>
+        <ul class="summary">${r.miembros.map((m) => `<li>${m.asiste ? '✅' : '❌'} ${esc(m.nombre)}</li>`).join('')}</ul>
+        ${r.mensaje ? `<p class="hand" style="font-size:1.4rem">“${esc(r.mensaje)}”</p>` : ''}
+        ${van ? `<p class="muted">🥂 ${esc(E.bebidas)}</p>` : ''}
+        <button class="btn alt sm" id="edit">Cambiar respuesta</button>`;
+      $('#edit').onclick = () => { state.editing = true; renderRsvp(); };
+      return;
+    }
+    const prev = (n) => r?.miembros.find((m) => m.nombre === n);
+    box.innerHTML = `
+      <p><b>${esc(familia)}</b>: ¡los invito a festejar mi egreso! ¿Quiénes vienen?</p>
+      <form id="rsvpForm">
+        ${miembros.map((n, i) => {
+          const p = prev(n);
+          return `<fieldset class="member" data-name="${esc(n)}">
+            <legend>${esc(n)}</legend>
+            <span class="seg">
+              <label><input type="radio" name="a${i}" value="si" required ${p?.asiste ? 'checked' : ''}><span>Voy 🎉</span></label>
+              <label><input type="radio" name="a${i}" value="no" ${p && !p.asiste ? 'checked' : ''}><span>No puedo</span></label>
+            </span>
+          </fieldset>`;
+        }).join('')}
+        <div class="field rsvp-msg">
+          <label for="msg">Unas palabras para la homenajeada (opcional)</label>
+          <textarea class="input" id="msg" maxlength="500" placeholder="¡Felicitaciones!">${esc(r?.mensaje || '')}</textarea>
+        </div>
+        <button class="btn" type="submit">Firmar y enviar ✍️</button>
+        <p class="err" id="rsvpErr" role="alert"></p>
+      </form>`;
+    $('#rsvpForm').addEventListener('submit', submitRsvp);
+  }
+
+  async function submitRsvp(e) {
+    e.preventDefault();
+    const f = e.target;
+    const btn = f.querySelector('[type=submit]');
+    const body = {
+      inv: slug,
+      mensaje: $('#msg').value.trim(),
+      miembros: state.invitado.miembros.map((n, i) => ({ nombre: n, asiste: f[`a${i}`].value === 'si' })),
+    };
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+    try {
+      const res = await API.rsvp(body);
+      if (!res.ok) throw new Error(res.error);
+      state.respuesta = { mensaje: body.mensaje, miembros: body.miembros };
+      state.editing = false;
+      renderRsvp();
+      if (body.miembros.some((m) => m.asiste)) confetti();
+      updateFab();
+    } catch {
+      btn.disabled = false;
+      btn.textContent = 'Firmar y enviar ✍️';
+      $('#rsvpErr').textContent = 'No se pudo enviar. Revisá tu conexión y probá de nuevo.';
+    }
+  }
+
+  // ---------- botón flotante ----------
+  const fab = $('#fab');
+  let heroVisible = true, rsvpVisible = false;
+  function updateFab() {
+    const pending = slug && state.invitado && !state.respuesta;
+    fab.textContent = pending ? 'Confirmar 💌' : 'Ver info 📍';
+    fab.href = pending ? '#confirmar' : '#info';
+    fab.classList.toggle('off', heroVisible || rsvpVisible);
+  }
+  new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; updateFab(); }, { threshold: .3 }).observe($('#top'));
+  new IntersectionObserver(([e]) => { rsvpVisible = e.isIntersecting; updateFab(); }).observe($('#confirmar'));
+
+  // ---------- carga ----------
+  (async () => {
+    if (slug) {
+      try {
+        const res = await API.invite(slug);
+        if (res.ok) {
+          state.invitado = res.invitado;
+          state.respuesta = res.respuesta;
+          $('#greet').textContent = `¡Hola, ${res.invitado.familia}!`;
+          const g = CONFIG.grupos?.[String(res.invitado.grupo || '').trim().toLowerCase()];
+          if (g) {
+            Object.assign(E, g);
+            renderInfo();
+            if (!$('#album').hidden) fillAlbum(false);
+          }
+        }
+      } catch {}
+    }
+    renderRsvp();
+    updateFab();
+  })();
+})();
+</script>
+</body>
+</html>

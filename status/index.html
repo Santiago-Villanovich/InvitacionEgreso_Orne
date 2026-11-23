@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Status · Fiesta de egreso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bagel+Fat+One&family=Bungee&family=Caveat:wght@500;700&family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,800&family=Rubik+Mono+One&family=Shrikhand&family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/base.css">
+<style>
+  body { font-size: 16px; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 64px; }
+  header.top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  header.top h1 { margin: 0; font-weight: 400; font-size: clamp(1.6rem, 5vw, 2.4rem); }
+  .demo { background: var(--yellow); border: 2px solid var(--ink); border-radius: 12px; padding: 10px 14px; margin-bottom: 18px; font-size: .92rem; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px; }
+  .tab { border: 2px solid var(--ink); background: #fff; border-radius: 999px; padding: .5em 1.1em; font-weight: 800; cursor: pointer; white-space: nowrap; }
+  .tab[aria-selected="true"] { background: var(--ink); color: #fff; }
+  .panel { display: none; }
+  .panel.on { display: block; }
+  .card { background: #fff; border: 2px solid var(--ink); border-radius: 16px; padding: 18px; box-shadow: 4px 4px 0 var(--ink); margin-bottom: 20px; }
+  .card h2 { font-family: var(--display); font-weight: 400; font-size: 1rem; letter-spacing: .05em; margin: 0 0 12px; color: var(--hot); }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .kpi { background: #fff; border: 2px solid var(--ink); border-radius: 14px; padding: 14px 16px; box-shadow: 3px 3px 0 var(--ink); }
+  .kpi b { display: block; font-family: var(--display); font-size: 2rem; line-height: 1.1; }
+  .kpi span { font-size: .85rem; font-weight: 600; color: var(--ink-2); }
+  .kpi.pink { background: var(--rose); }
+  .kpi.yellow { background: #ffeaa0; }
+  .bar { height: 14px; border-radius: 99px; background: var(--paper-2); overflow: hidden; display: flex; border: 2px solid var(--ink); margin: 6px 0 8px; }
+  .bar i { display: block; height: 100%; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .85rem; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--c); margin-right: 6px; }
+  .grid2 { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .list { list-style: none; padding: 0; margin: 0; }
+  .list li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+  .list li:last-child { border-bottom: 0; }
+  .msg { padding: 10px 0; border-bottom: 1px dashed var(--line); }
+  .msg p { margin: 0; font-family: var(--hand); font-size: 1.35rem; line-height: 1.2; }
+  .msg small { color: var(--ink-2); }
+  .tablewrap { overflow-x: auto; margin: 0 -18px; padding: 0 18px; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  th { text-align: left; font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); padding: 8px 8px; border-bottom: 2px solid var(--ink); white-space: nowrap; }
+  td { padding: 8px; border-bottom: 1px dashed var(--line); vertical-align: middle; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .pill { display: inline-block; border-radius: 999px; padding: .15em .7em; font-weight: 700; font-size: .8rem; border: 1.5px solid var(--ink); white-space: nowrap; }
+  .pill.ok { background: #b8f0d2; }
+  .pill.no { background: #e4dde8; }
+  .pill.wait { background: #ffeaa0; }
+  .tools { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; align-items: center; }
+  .tools .input { width: auto; flex: 1; min-width: 160px; }
+  .ci { width: 100%; min-width: 64px; border: 1.5px solid transparent; background: transparent; border-radius: 8px; padding: .35em .45em; }
+  .ci:hover, .ci:focus { border-color: var(--ink); background: #fff; }
+  .ci:disabled { color: var(--ink-2); font-style: italic; }
+  .ci.n { text-align: right; }
+  td.item .ci { min-width: 160px; }
+  tr.bought td { background: rgba(76,195,138,.1); }
+  tr.bought .ci[name=item] { text-decoration: line-through; color: var(--ink-2); }
+  .x { border: 0; background: none; cursor: pointer; font-size: 1.1rem; padding: 4px 8px; border-radius: 8px; }
+  .x:hover { background: var(--rose); }
+  .saved { font-size: .85rem; color: var(--ink-2); }
+  .people { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .people .input { width: 90px; }
+  .links { display: flex; gap: 6px; }
+  .login { max-width: 380px; margin: 12vh auto; }
+  .hint { font-size: .85rem; color: var(--ink-2); margin: 10px 0 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1 data-ransom="Status de la fiesta"></h1>
+    <button class="btn sm alt" id="refresh">↻ Actualizar</button>
+  </header>
+
+  <div class="demo" id="demoBanner" hidden>
+    <b>Modo demo:</b> los datos se guardan sólo en este navegador. Configurá <code>SCRIPT_URL</code> en <code>config.js</code> para usar Google Sheets.
+    <button class="btn sm alt" id="resetDemo" style="margin-left:8px">Reiniciar demo</button>
+  </div>
+
+  <form class="card login" id="login" hidden>
+    <h2>ENTRAR</h2>
+    <div class="field"><label for="key">Clave</label><input class="input" id="key" type="password" autocomplete="current-password" required></div>
+    <p class="err" id="loginErr" style="color:#c0003d;font-weight:700"></p>
+    <button class="btn" type="submit">Entrar</button>
+  </form>
+
+  <div id="app" hidden>
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="resumen" aria-selected="true">Resumen</button>
+      <button class="tab" role="tab" data-tab="invitados" aria-selected="false">Invitados</button>
+      <button class="tab" role="tab" data-tab="compras" aria-selected="false">Compras y gastos</button>
+    </nav>
+
+    <section class="panel on" id="p-resumen"></section>
+
+    <section class="panel" id="p-invitados">
+      <div class="card">
+        <div class="tools">
+          <input class="input" id="search" type="search" placeholder="Buscar familia o persona…">
+          <select class="input" id="filter" style="flex:none">
+            <option value="">Todos</option>
+            <option value="wait">Sin responder</option>
+            <option value="ok">Vienen</option>
+            <option value="no">No vienen</option>
+          </select>
+        </div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Familia</th><th>Integrantes</th><th>Estado</th><th>Link</th></tr></thead>
+          <tbody id="invRows"></tbody>
+        </table></div>
+        <p class="hint" id="invHint"></p>
+      </div>
+    </section>
+
+    <section class="panel" id="p-compras">
+      <div class="kpis" id="buyKpis"></div>
+      <div class="card">
+        <div class="tools" style="justify-content:space-between">
+          <div class="people">
+            <label for="people"><b>Calcular para</b></label>
+            <input class="input" id="people" type="number" min="1" inputmode="numeric">
+            <span>personas</span>
+            <button class="btn sm alt" type="button" id="useConf"></button>
+            <button class="btn sm alt" type="button" id="useInv"></button>
+          </div>
+          <span class="saved" id="saved" aria-live="polite"></span>
+        </div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Item</th><th class="num">x persona</th><th class="num">Cantidad</th><th class="num">Precio unit.</th><th class="num">Subtotal</th><th>Comprado</th><th></th></tr></thead>
+          <tbody id="buyRows"></tbody>
+        </table></div>
+        <div class="tools" style="margin-top:14px;margin-bottom:0">
+          <button class="btn sm" id="addItem" type="button">+ Agregar item</button>
+        </div>
+        <p class="hint">Si completás <b>x persona</b> (ej. 4 porciones de pizza), la cantidad se calcula sola según las personas. Si no, escribí la cantidad fija.</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script src="../config.js"></script>
+<script src="../js/common.js"></script>
+<script>
+(() => {
+  ransomAll();
+  const KEY_LS = 'status-key';
+  const money = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 });
+  const num = (v) => { const n = parseFloat(String(v).replace(',', '.')); return isFinite(n) ? n : 0; };
+  let key = store.get(KEY_LS) || '';
+  let data = null;
+  let people = null;
+
+  $('#demoBanner').hidden = !API.demo;
+  $('#resetDemo').onclick = () => { if (confirm('¿Borrar los datos de prueba de este navegador?')) { API.resetDemo(); load(); } };
+
+  // ---------- tabs ----------
+  $$('.tab').forEach((t) => t.addEventListener('click', () => {
+    $$('.tab').forEach((x) => x.setAttribute('aria-selected', x === t));
+    $$('.panel').forEach((p) => p.classList.toggle('on', p.id === 'p-' + t.dataset.tab));
+    location.hash = t.dataset.tab;
+  }));
+  $(`.tab[data-tab="${location.hash.slice(1)}"]`)?.click();
+
+  // ---------- carga ----------
+  async function load() {
+    $('#refresh').disabled = true;
+    try {
+      const res = await API.status(key);
+      if (!res.ok) throw new Error(res.error);
+      data = res;
+      $('#login').hidden = true;
+      $('#app').hidden = false;
+      render();
+    } catch (e) {
+      $('#app').hidden = true;
+      $('#login').hidden = false;
+      $('#loginErr').textContent = key ? (e.message === 'unauthorized' ? 'Clave incorrecta.' : 'No se pudo conectar con la planilla.') : '';
+    } finally {
+      $('#refresh').disabled = false;
+    }
+  }
+  $('#login').addEventListener('submit', (e) => { e.preventDefault(); key = $('#key').value; store.set(KEY_LS, key); load(); });
+  $('#refresh').onclick = load;
+
+  function familias() {
+    return data.invitados.filter((i) => i.slug).map((i) => {
+      const slug = String(i.slug).trim();
+      const miembros = String(i.miembros).split(',').map((s) => s.trim()).filter(Boolean);
+      const r = respuestaDe(data.respuestas, slug);
+      const van = r ? r.miembros.filter((m) => m.asiste) : [];
+      const estado = !r ? 'wait' : van.length ? 'ok' : 'no';
+      return { slug, familia: i.familia, grupo: String(i.grupo || '').trim().toLowerCase(), miembros, r, van, estado, link: CONFIG.BASE_URL + '?inv=' + encodeURIComponent(slug) };
+    });
+  }
+
+  function render() {
+    const fams = familias();
+    renderResumen(fams);
+    renderInvitados(fams);
+    renderCompras(fams);
+  }
+
+  // ---------- resumen ----------
+  function renderResumen(fams) {
+    const totalP = fams.reduce((a, f) => a + f.miembros.length, 0);
+    const conf = fams.reduce((a, f) => a + f.van.length, 0);
+    const noVan = fams.reduce((a, f) => a + (f.r ? f.r.miembros.length - f.van.length : 0), 0);
+    const pend = totalP - conf - noVan;
+    const resp = fams.filter((f) => f.r).length;
+    const grupos = {};
+    fams.forEach((f) => {
+      const g = (grupos[f.grupo || 'sin grupo'] ||= { inv: 0, conf: 0 });
+      g.inv += f.miembros.length;
+      g.conf += f.van.length;
+    });
+    const msgs = fams.filter((f) => f.r?.mensaje).sort((a, b) => String(b.r.fecha).localeCompare(String(a.r.fecha)));
+    const pct = (n) => totalP ? (n / totalP * 100) + '%' : '0';
+    $('#p-resumen').innerHTML = `
+      <div class="kpis">
+        <div class="kpi pink"><b>${conf}</b><span>personas confirmadas</span></div>
+        <div class="kpi"><b>${noVan}</b><span>no pueden ir</span></div>
+        <div class="kpi yellow"><b>${pend}</b><span>sin respuesta</span></div>
+        <div class="kpi"><b>${resp}/${fams.length}</b><span>familias respondieron</span></div>
+      </div>
+      <div class="card">
+        <h2>ASISTENCIA (${totalP} INVITADOS)</h2>
+        <div class="bar"><i style="width:${pct(conf)};background:var(--green)"></i><i style="width:${pct(noVan)};background:var(--ink-2)"></i><i style="width:${pct(pend)};background:var(--yellow)"></i></div>
+        <div class="legend"><span style="--c:var(--green)">Vienen ${conf}</span><span style="--c:var(--ink-2)">No vienen ${noVan}</span><span style="--c:var(--yellow)">Pendientes ${pend}</span></div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <h2>POR GRUPO</h2>
+          <ul class="list">${Object.entries(grupos).map(([g, v]) => `<li><span><b>${esc(g)}</b><br><small class="muted">${esc(CONFIG.grupos?.[g]?.horaTexto || 'horario general')}</small></span><span><b>${v.conf}</b> <small class="muted">de ${v.inv} confirmados</small></span></li>`).join('')}</ul>
+        </div>
+        <div class="card">
+          <h2>MENSAJES</h2>
+          ${msgs.length ? msgs.map((f) => `<div class="msg"><p>“${esc(f.r.mensaje)}”</p><small>— ${esc(f.familia)}</small></div>`).join('') : '<p class="muted">Todavía no hay mensajes.</p>'}
+        </div>
+      </div>`;
+  }
+
+  // ---------- invitados ----------
+  const LABEL = { ok: 'Vienen', no: 'No vienen', wait: 'Sin responder' };
+  function renderInvitados(fams) {
+    const q = $('#search').value.trim().toLowerCase();
+    const st = $('#filter').value;
+    const rows = fams.filter((f) => (!st || f.estado === st) && (!q || (f.familia + ' ' + f.grupo + ' ' + f.miembros.join(' ')).toLowerCase().includes(q)));
+    $('#invRows').innerHTML = rows.map((f) => {
+      const pill = f.estado === 'ok' ? `${f.van.length}/${f.miembros.length} vienen` : LABEL[f.estado];
+      const wa = 'https://wa.me/?text=' + encodeURIComponent(`¡Hola ${f.familia}! 🎓 Me recibí y quiero festejarlo con ustedes. Abrí tu invitación y confirmá acá: ${f.link}`);
+      return `<tr>
+        <td><b>${esc(f.familia)}</b><br><small class="muted">${esc(f.slug)}${f.grupo ? ' · ' + esc(f.grupo) : ''}</small></td>
+        <td>${f.miembros.map((m) => { const x = f.r?.miembros.find((y) => y.nombre === m); return `${x ? (x.asiste ? '✅' : '❌') : '⏳'} ${esc(m)}`; }).join('<br>')}</td>
+        <td><span class="pill ${f.estado}">${pill}</span></td>
+        <td><div class="links">
+          <button class="btn sm alt" data-copy="${esc(f.link)}">Copiar</button>
+          <a class="btn sm" href="${wa}" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn sm alt" href="${esc(f.link)}" target="_blank" rel="noopener" aria-label="Abrir invitación de ${esc(f.familia)}">↗</a>
+        </div></td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="4" class="muted">No hay resultados.</td></tr>';
+    $('#invHint').innerHTML = API.demo
+      ? 'Para agregar familias en modo demo editá <code>MOCK_INVITADOS</code> en <code>config.js</code> y tocá "Reiniciar demo".'
+      : 'Para agregar o editar familias, editá la hoja <b>Invitados</b> de la planilla (slug, familia, miembros separados por coma, grupo) y tocá Actualizar.';
+  }
+  $('#search').addEventListener('input', () => data && renderInvitados(familias()));
+  $('#filter').addEventListener('change', () => data && renderInvitados(familias()));
+  $('#invRows').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-copy]');
+    if (!b) return;
+    try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = '¡Copiado!'; } catch { prompt('Copiá el link:', b.dataset.copy); }
+    setTimeout(() => (b.textContent = 'Copiar'), 1500);
+  });
+
+  // ---------- compras ----------
+  let items = [];
+  let counts = { conf: 0, inv: 0 };
+  const qty = (it) => num(it.xPersona) > 0 ? Math.ceil(num(it.xPersona) * people) : num(it.cantidad);
+
+  function renderCompras(fams) {
+    counts = { conf: fams.reduce((a, f) => a + f.van.length, 0), inv: fams.reduce((a, f) => a + f.miembros.length, 0) };
+    people ??= counts.conf || counts.inv;
+    $('#people').value = people;
+    $('#useConf').textContent = `Confirmados (${counts.conf})`;
+    $('#useInv').textContent = `Todos los invitados (${counts.inv})`;
+    items = (data.compras || []).map((c) => ({ item: c.item || '', xPersona: c.xPersona ?? '', cantidad: c.cantidad ?? '', precio: c.precio ?? '', comprado: isYes(c.comprado) }));
+    $('#buyRows').innerHTML = '';
+    items.forEach(addRow);
+    totals();
+  }
+
+  function addRow(it) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="item"><input class="ci" name="item" placeholder="Ej: Hielo" aria-label="Item"></td>
+      <td class="num"><input class="ci n" name="xPersona" inputmode="decimal" placeholder="—" aria-label="Cantidad por persona"></td>
+      <td class="num"><input class="ci n" name="cantidad" inputmode="decimal" placeholder="0" aria-label="Cantidad"></td>
+      <td class="num"><input class="ci n" name="precio" inputmode="decimal" placeholder="$0" aria-label="Precio unitario"></td>
+      <td class="num sub"></td>
+      <td><input type="checkbox" name="comprado" aria-label="Comprado"></td>
+      <td><button class="x" type="button" aria-label="Eliminar">✕</button></td>`;
+    tr._it = it;
+    for (const k of ['item', 'xPersona', 'cantidad', 'precio']) tr.querySelector(`[name=${k}]`).value = it[k];
+    tr.querySelector('[name=comprado]').checked = it.comprado;
+    $('#buyRows').append(tr);
+    updateRow(tr);
+  }
+
+  function updateRow(tr) {
+    const it = tr._it;
+    const auto = num(it.xPersona) > 0;
+    const c = tr.querySelector('[name=cantidad]');
+    c.disabled = auto;
+    if (auto) c.value = qty(it);
+    tr.querySelector('.sub').textContent = money.format(qty(it) * num(it.precio));
+    tr.classList.toggle('bought', it.comprado);
+  }
+
+  function totals() {
+    const total = items.reduce((a, it) => a + qty(it) * num(it.precio), 0);
+    const spent = items.filter((it) => it.comprado).reduce((a, it) => a + qty(it) * num(it.precio), 0);
+    $('#buyKpis').innerHTML = `
+      <div class="kpi pink"><b>${money.format(total)}</b><span>total estimado</span></div>
+      <div class="kpi"><b>${money.format(spent)}</b><span>ya comprado</span></div>
+      <div class="kpi yellow"><b>${money.format(total - spent)}</b><span>falta comprar</span></div>
+      <div class="kpi"><b>${money.format(people ? total / people : 0)}</b><span>por persona (${people || 0})</span></div>`;
+  }
+
+  let saveT;
+  function scheduleSave() {
+    $('#saved').textContent = 'Cambios sin guardar…';
+    clearTimeout(saveT);
+    saveT = setTimeout(async () => {
+      $('#saved').textContent = 'Guardando…';
+      try {
+        const res = await API.saveCompras(key, items.filter((it) => it.item.trim()));
+        if (!res.ok) throw new Error(res.error);
+        data.compras = items;
+        $('#saved').textContent = 'Guardado ✓';
+      } catch {
+        $('#saved').textContent = '⚠️ No se pudo guardar. Probá de nuevo.';
+      }
+    }, 1200);
+  }
+
+  $('#buyRows').addEventListener('input', (e) => {
+    const tr = e.target.closest('tr');
+    const k = e.target.name;
+    tr._it[k] = k === 'comprado' ? e.target.checked : e.target.value;
+    updateRow(tr);
+    totals();
+    scheduleSave();
+  });
+  $('#buyRows').addEventListener('click', (e) => {
+    if (!e.target.closest('.x')) return;
+    const tr = e.target.closest('tr');
+    items.splice(items.indexOf(tr._it), 1);
+    tr.remove();
+    totals();
+    scheduleSave();
+  });
+  $('#addItem').onclick = () => {
+    const it = { item: '', xPersona: '', cantidad: 1, precio: '', comprado: false };
+    items.push(it);
+    addRow(it);
+    $('#buyRows').lastElementChild.querySelector('[name=item]').focus();
+  };
+  const setPeople = (n) => {
+    people = Math.max(1, Math.round(num(n)) || 1);
+    $('#people').value = people;
+    $$('#buyRows tr').forEach(updateRow);
+    totals();
+  };
+  $('#people').addEventListener('input', (e) => { if (e.target.value) setPeople(e.target.value); });
+  $('#useConf').onclick = () => setPeople(counts.conf);
+  $('#useInv').onclick = () => setPeople(counts.inv);
+
+  load();
+})();
+</script>
+</body>
+</html>
