@@ -18,11 +18,11 @@ window.CONFIG = {
     bebidas: 'Si querés, sumá algo rico para tomar: gaseosa, vino, cerveza o lo que más te guste. ¡Brindamos juntos!',
   },
 
-  // Cada familia de la hoja Invitados tiene un grupo (columna "grupo"). Lo que pongas acá pisa los datos de "evento" para ese grupo.
-  grupos: {
-    familia: { inicio: '2026-12-12T20:00:00-03:00', duracionHoras: 4, horaTexto: 'de 20 a 24 hs' },
-    amigos: { inicio: '2026-12-12T23:00:00-03:00', duracionHoras: 5, horaTexto: 'desde las 23 hs' },
-  },
+  // Sólo para modo demo: con SCRIPT_URL los grupos se editan desde /status (hoja Grupos).
+  MOCK_GRUPOS: [
+    { grupo: 'familia', horaTexto: 'de 20 a 24 hs', inicio: '2026-12-12T20:00', fin: '2026-12-13T00:00' },
+    { grupo: 'amigos', horaTexto: 'desde las 23 hs', inicio: '2026-12-12T23:00', fin: '2026-12-13T04:00' },
+  ],
 
   timeline: [
     { anio: '2003', etapa: 'Salita de 3', texto: 'Primer guardapolvo, primeras témperas y ya organizando a todos.', foto: '' },

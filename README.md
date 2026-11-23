@@ -34,14 +34,7 @@ Sin `SCRIPT_URL` en `config.js` todo funciona en **modo demo**: los datos quedan
 ## 1. Configurar la invitación (`config.js`)
 
 - **`evento`**: nombre, carrera, fecha, lugar, dirección, `mapsQuery` (lo que buscarías en Google Maps), dress code, fecha límite y el texto de bebidas.
-- **`grupos`**: horario propio por grupo. Lo que pongas pisa los datos de `evento` para las familias de ese grupo:
-  ```js
-  grupos: {
-    familia: { inicio: '2026-12-12T20:00:00-03:00', duracionHoras: 4, horaTexto: 'de 20 a 24 hs' },
-    amigos:  { inicio: '2026-12-12T23:00:00-03:00', duracionHoras: 5, horaTexto: 'desde las 23 hs' },
-  },
-  ```
-  `inicio` es la fecha y hora exactas (para la cuenta regresiva y el calendario); `horaTexto` es lo que se muestra. Podés agregar más grupos con el nombre que quieras.
+- **Horario general**: `inicio`, `duracionHoras` y `horaTexto` de `evento` los ven las familias que no tienen grupo. Los horarios por grupo se manejan desde `/status → Grupos y horarios` (ver punto 3).
 - **`timeline`**: etapas de la historia. Para la foto: guardala en `img/` y poné `foto: 'img/salita.jpg'`.
 - **`figuritas`**: el orden del sobre. `tipo: 'foto'` lleva foto y título; `tipo: 'dato'` muestra un dato del evento (`fecha`, `lugar`, `dress`, `bebida`, `confirmar`). `brillante: true` le da efecto holográfico. Conviene que sea un número par.
 - **Fotos**: achicalas antes de subirlas (unos 1200 px del lado largo, JPG) para que cargue rápido en el celular.
@@ -88,20 +81,14 @@ Refrescar http://localhost:8080/status/: ahora pide la clave y lee la planilla.
 
 ---
 
-## 3. Cargar invitados
+## 3. Cargar grupos e invitados (desde `/status`)
 
-En la hoja `Invitados`, una fila por familia o grupo:
+1. **Grupos y horarios** → "+ Agregar grupo": nombre (ej. `familia`), el texto que ve el invitado (ej. `de 20 a 24 hs`), y cuándo empieza y termina (para la cuenta regresiva y el calendario). Se guarda solo.
+2. **Invitados** → "+ Nueva familia": nombre que aparece en la invitación, integrantes (uno por renglón) y grupo. El link se genera solo, con un sufijo difícil de adivinar (`familia-perez-7k2`).
+3. Con ✏️ editás y con 🗑️ borrás. El link de una familia no cambia al editarla.
+4. "Copiar" o "WhatsApp" para mandar cada link.
 
-| slug | familia | miembros | grupo |
-|---|---|---|---|
-| perez-7k2 | Familia Pérez | Pepe, Laura, Juan, Sofi | familia |
-| chicas-facu-q8 | Las chicas de la facu | Cami, Flor, Agus | amigos |
-
-- **slug**: el identificador del link, sin espacios ni tildes. Agregale algo difícil de adivinar (`-7k2`), porque quien tenga el link puede responder por esa familia.
-- **miembros**: separados por coma; cada uno confirma por separado.
-- **grupo**: tiene que coincidir con un nombre de `grupos` en `config.js`. Si queda vacío, usa el horario de `evento`.
-
-El link de cada familia se copia o se manda por WhatsApp desde **/status → Invitados**.
+Todo queda en las hojas `Grupos` e `Invitados` de la planilla; también se pueden editar ahí a mano.
 
 ---
 
@@ -111,6 +98,7 @@ El link de cada familia se copia o se manda por WhatsApp desde **/status → Inv
 1. https://github.com/new → nombre: `invitacion` → **Public** → **Create repository** (sin README).
 
 ### 4.2 Subir los archivos (desde la terminal de VS Code)
+Si ya habías agregado un `origin` con otra URL, corregilo con `git remote set-url origin URL_NUEVA` en lugar de `git remote add`.
 ```powershell
 git init
 git add .

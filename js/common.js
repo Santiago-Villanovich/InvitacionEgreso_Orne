@@ -65,6 +65,12 @@ function confetti() {
   setTimeout(() => box.remove(), 4500);
 }
 
+// ponytail: horas sin zona se toman como Argentina (-03:00); cambiar si la fiesta es en otro huso
+const toDate = (v) => {
+  const s = String(v || '');
+  return new Date(/[zZ]$|[+-]\d{2}:?\d{2}$/.test(s) ? s : s + '-03:00');
+};
+
 const isYes = (v) => v === true || /^s[ií]|^true$/i.test(String(v));
 
 function respuestaDe(rows, slug) {
@@ -84,6 +90,7 @@ const API = (() => {
 
   const demoDb = () => store.get(KEY) || {
     invitados: CONFIG.MOCK_INVITADOS.map((i) => ({ slug: i.slug, familia: i.familia, miembros: i.miembros.join(', '), grupo: i.grupo || '' })),
+    grupos: CONFIG.MOCK_GRUPOS,
     respuestas: [],
     compras: CONFIG.MOCK_COMPRAS,
   };
@@ -106,7 +113,9 @@ const API = (() => {
       const db = demoDb();
       const i = db.invitados.find((x) => x.slug === slug);
       if (!i) return delay({ ok: false, error: 'not_found' });
-      return delay({ ok: true, invitado: { slug, familia: i.familia, miembros: miembrosDe(i), grupo: i.grupo || '' }, respuesta: respuestaDe(db.respuestas, slug) });
+      const g = String(i.grupo || '').trim().toLowerCase();
+      const grupo = (db.grupos || []).find((x) => g && String(x.grupo).trim().toLowerCase() === g) || null;
+      return delay({ ok: true, invitado: { slug, familia: i.familia, miembros: miembrosDe(i), grupo: i.grupo || '' }, respuesta: respuestaDe(db.respuestas, slug), grupo });
     },
     async rsvp(body) {
       if (!demo) return post({ action: 'rsvp', ...body });
@@ -124,10 +133,10 @@ const API = (() => {
       if (!demo) return get({ action: 'status', key });
       return delay({ ok: true, ...demoDb() });
     },
-    async saveCompras(key, items) {
-      if (!demo) return post({ action: 'compras', key, items });
+    async save(key, sheet, rows) {
+      if (!demo) return post({ action: 'save', key, sheet, rows });
       const db = demoDb();
-      db.compras = items;
+      db[sheet.toLowerCase()] = rows;
       store.set(KEY, db);
       return delay({ ok: true });
     },

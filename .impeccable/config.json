@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-23T03:19:03.484Z",
+        "reason": "user brief: estética papel/kraft/collage con referencias de papel (mensaje inicial del usuario)"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "status/index.html"
+        ],
+        "createdAt": "2026-11-23T03:19:03.891Z",
+        "reason": "user brief: estética papel/kraft/collage con referencias de papel (mensaje inicial del usuario)"
+      }
+    ]
+  }
+}

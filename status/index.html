@@ -65,6 +65,14 @@
   .links { display: flex; gap: 6px; }
   .login { max-width: 380px; margin: 12vh auto; }
   .hint { font-size: .85rem; color: var(--ink-2); margin: 10px 0 0; }
+  .ci[type="datetime-local"] { min-width: 190px; }
+  .ci[readonly] { font-weight: 700; }
+  .ci[name="grupo"] { min-width: 120px; }
+  .dlg { border: 0; padding: 0; background: none; width: min(92vw, 460px); }
+  .dlg::backdrop { background: rgba(42,33,48,.55); }
+  .dlg .card { margin: 0; display: grid; gap: 14px; }
+  .dlg .card h2 { margin: 0; }
+  .err { color: #c0003d; font-weight: 700; margin: 0; min-height: 1.2em; }
 </style>
 </head>
 <body>
@@ -90,6 +98,7 @@
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="resumen" aria-selected="true">Resumen</button>
       <button class="tab" role="tab" data-tab="invitados" aria-selected="false">Invitados</button>
+      <button class="tab" role="tab" data-tab="grupos" aria-selected="false">Grupos y horarios</button>
       <button class="tab" role="tab" data-tab="compras" aria-selected="false">Compras y gastos</button>
     </nav>
 
@@ -105,12 +114,29 @@
             <option value="ok">Vienen</option>
             <option value="no">No vienen</option>
           </select>
+          <button class="btn sm" id="newFam" type="button">+ Nueva familia</button>
         </div>
         <div class="tablewrap"><table>
-          <thead><tr><th>Familia</th><th>Integrantes</th><th>Estado</th><th>Link</th></tr></thead>
+          <thead><tr><th>Familia</th><th>Integrantes</th><th>Estado</th><th>Link</th><th></th></tr></thead>
           <tbody id="invRows"></tbody>
         </table></div>
-        <p class="hint" id="invHint"></p>
+      </div>
+    </section>
+
+    <section class="panel" id="p-grupos">
+      <div class="card">
+        <div class="tools" style="justify-content:space-between">
+          <h2 style="margin:0">GRUPOS Y HORARIOS</h2>
+          <span class="saved" id="grpSaved" aria-live="polite"></span>
+        </div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Grupo</th><th>Texto en la invitación</th><th>Empieza</th><th>Termina</th><th class="num">Familias</th><th></th></tr></thead>
+          <tbody id="grpRows"></tbody>
+        </table></div>
+        <div class="tools" style="margin-top:14px;margin-bottom:0">
+          <button class="btn sm" id="addGrp" type="button">+ Agregar grupo</button>
+        </div>
+        <p class="hint" id="grpHint"></p>
       </div>
     </section>
 
@@ -139,6 +165,21 @@
     </section>
   </div>
 </div>
+
+<dialog class="dlg" id="famDlg">
+  <form class="card" id="famForm">
+    <h2 id="famTitle">NUEVA FAMILIA</h2>
+    <div class="field"><label for="fFamilia">Nombre que aparece en la invitación</label><input class="input" id="fFamilia" name="familia" required maxlength="80" placeholder="Familia Pérez"></div>
+    <div class="field"><label for="fMiembros">Integrantes (uno por renglón)</label><textarea class="input" id="fMiembros" name="miembros" rows="4" required placeholder="Pepe&#10;Laura&#10;Juan"></textarea></div>
+    <div class="field"><label for="fGrupo">Grupo / horario</label><select class="input" id="fGrupo" name="grupo"></select></div>
+    <p class="hint" id="famSlug" style="margin:0"></p>
+    <p class="err" id="famErr" role="alert"></p>
+    <div class="tools" style="margin:0">
+      <button class="btn" type="submit">Guardar</button>
+      <button class="btn alt" type="button" id="famCancel">Cancelar</button>
+    </div>
+  </form>
+</dialog>
 
 <script src="../config.js"></script>
 <script src="../js/common.js"></script>
@@ -184,14 +225,26 @@
   $('#login').addEventListener('submit', (e) => { e.preventDefault(); key = $('#key').value; store.set(KEY_LS, key); load(); });
   $('#refresh').onclick = load;
 
+  const lower = (s) => String(s ?? '').trim().toLowerCase();
+  const splitMiembros = (s) => String(s ?? '').split(',').map((x) => x.trim()).filter(Boolean);
+  const grupoDe = (nombre) => (data.grupos || []).find((g) => lower(g.grupo) && lower(g.grupo) === lower(nombre));
+  const invitadosRows = () => data.invitados.filter((i) => i.slug).map((i) => ({ slug: String(i.slug).trim(), familia: i.familia, miembros: i.miembros, grupo: i.grupo || '' }));
+
+  async function saveSheet(sheet, rows) {
+    const res = await API.save(key, sheet, rows);
+    if (!res.ok) throw new Error(res.error);
+  }
+
   function familias() {
-    return data.invitados.filter((i) => i.slug).map((i) => {
-      const slug = String(i.slug).trim();
-      const miembros = String(i.miembros).split(',').map((s) => s.trim()).filter(Boolean);
-      const r = respuestaDe(data.respuestas, slug);
+    return invitadosRows().map((i) => {
+      const miembros = splitMiembros(i.miembros);
+      const r0 = respuestaDe(data.respuestas, i.slug);
+      const vigentes = r0 ? r0.miembros.filter((m) => miembros.includes(m.nombre)) : [];
+      const r = vigentes.length ? { ...r0, miembros: vigentes } : null;
       const van = r ? r.miembros.filter((m) => m.asiste) : [];
       const estado = !r ? 'wait' : van.length ? 'ok' : 'no';
-      return { slug, familia: i.familia, grupo: String(i.grupo || '').trim().toLowerCase(), miembros, r, van, estado, link: CONFIG.BASE_URL + '?inv=' + encodeURIComponent(slug) };
+      const g = grupoDe(i.grupo);
+      return { slug: i.slug, familia: i.familia, grupo: g ? g.grupo : '', miembros, r, van, estado, link: CONFIG.BASE_URL + '?inv=' + encodeURIComponent(i.slug) };
     });
   }
 
@@ -199,6 +252,7 @@
     const fams = familias();
     renderResumen(fams);
     renderInvitados(fams);
+    renderGrupos();
     renderCompras(fams);
   }
 
@@ -211,7 +265,7 @@
     const resp = fams.filter((f) => f.r).length;
     const grupos = {};
     fams.forEach((f) => {
-      const g = (grupos[f.grupo || 'sin grupo'] ||= { inv: 0, conf: 0 });
+      const g = (grupos[f.grupo || 'Sin grupo'] ||= { inv: 0, conf: 0, hora: grupoDe(f.grupo)?.horaTexto || CONFIG.evento.horaTexto + ' (general)' });
       g.inv += f.miembros.length;
       g.conf += f.van.length;
     });
@@ -232,7 +286,7 @@
       <div class="grid2">
         <div class="card">
           <h2>POR GRUPO</h2>
-          <ul class="list">${Object.entries(grupos).map(([g, v]) => `<li><span><b>${esc(g)}</b><br><small class="muted">${esc(CONFIG.grupos?.[g]?.horaTexto || 'horario general')}</small></span><span><b>${v.conf}</b> <small class="muted">de ${v.inv} confirmados</small></span></li>`).join('')}</ul>
+          <ul class="list">${Object.entries(grupos).map(([g, v]) => `<li><span><b>${esc(g)}</b><br><small class="muted">${esc(v.hora)}</small></span><span><b>${v.conf}</b> <small class="muted">de ${v.inv} confirmados</small></span></li>`).join('')}</ul>
         </div>
         <div class="card">
           <h2>MENSAJES</h2>
@@ -259,20 +313,167 @@
           <a class="btn sm" href="${wa}" target="_blank" rel="noopener">WhatsApp</a>
           <a class="btn sm alt" href="${esc(f.link)}" target="_blank" rel="noopener" aria-label="Abrir invitación de ${esc(f.familia)}">↗</a>
         </div></td>
+        <td><div class="links">
+          <button class="x" data-edit="${esc(f.slug)}" aria-label="Editar ${esc(f.familia)}">✏️</button>
+          <button class="x" data-del="${esc(f.slug)}" aria-label="Eliminar ${esc(f.familia)}">🗑️</button>
+        </div></td>
       </tr>`;
-    }).join('') || '<tr><td colspan="4" class="muted">No hay resultados.</td></tr>';
-    $('#invHint').innerHTML = API.demo
-      ? 'Para agregar familias en modo demo editá <code>MOCK_INVITADOS</code> en <code>config.js</code> y tocá "Reiniciar demo".'
-      : 'Para agregar o editar familias, editá la hoja <b>Invitados</b> de la planilla (slug, familia, miembros separados por coma, grupo) y tocá Actualizar.';
+    }).join('') || '<tr><td colspan="5" class="muted">No hay resultados.</td></tr>';
   }
   $('#search').addEventListener('input', () => data && renderInvitados(familias()));
   $('#filter').addEventListener('change', () => data && renderInvitados(familias()));
   $('#invRows').addEventListener('click', async (e) => {
+    const edit = e.target.closest('[data-edit]');
+    if (edit) return openFam(edit.dataset.edit);
+    const del = e.target.closest('[data-del]');
+    if (del) return delFam(del.dataset.del);
     const b = e.target.closest('[data-copy]');
     if (!b) return;
     try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = '¡Copiado!'; } catch { prompt('Copiá el link:', b.dataset.copy); }
     setTimeout(() => (b.textContent = 'Copiar'), 1500);
   });
+
+  // ---------- alta / edición de familias ----------
+  const famDlg = $('#famDlg'), famForm = $('#famForm');
+  let editing = null;
+
+  function newSlug(name, list) {
+    const base = name.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) || 'invitado';
+    let s;
+    do s = base + '-' + Math.random().toString(36).slice(2, 5); while (list.some((i) => i.slug === s));
+    return s;
+  }
+
+  function openFam(slug) {
+    editing = slug;
+    const f = slug ? invitadosRows().find((i) => i.slug === slug) : null;
+    $('#famTitle').textContent = f ? 'EDITAR FAMILIA' : 'NUEVA FAMILIA';
+    famForm.familia.value = f?.familia || '';
+    famForm.miembros.value = splitMiembros(f?.miembros).join('\n');
+    famForm.grupo.innerHTML = `<option value="">Horario general (${esc(CONFIG.evento.horaTexto)})</option>` +
+      (data.grupos || []).filter((g) => lower(g.grupo)).map((g) => `<option value="${esc(g.grupo)}">${esc(g.grupo)} · ${esc(g.horaTexto)}</option>`).join('');
+    famForm.grupo.value = grupoDe(f?.grupo)?.grupo || '';
+    $('#famSlug').textContent = f ? `Link: ${CONFIG.BASE_URL}?inv=${slug} (no cambia al editar)` : 'El link se genera solo al guardar.';
+    $('#famErr').textContent = '';
+    famDlg.showModal();
+    famForm.familia.focus();
+  }
+  $('#newFam').onclick = () => openFam(null);
+  $('#famCancel').onclick = () => famDlg.close();
+
+  famForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = famForm.querySelector('[type=submit]');
+    const miembros = famForm.miembros.value.split(/[\n,]/).map((s) => s.trim()).filter(Boolean);
+    const familia = famForm.familia.value.trim();
+    if (!familia || !miembros.length) { $('#famErr').textContent = 'Completá el nombre y al menos un integrante.'; return; }
+    const row = { familia, miembros: miembros.join(', '), grupo: famForm.grupo.value };
+    const list = invitadosRows();
+    if (editing) Object.assign(list.find((i) => i.slug === editing), row);
+    else list.push({ slug: newSlug(familia, list), ...row });
+    btn.disabled = true;
+    try {
+      await saveSheet('Invitados', list);
+      data.invitados = list;
+      famDlg.close();
+      render();
+    } catch {
+      $('#famErr').textContent = 'No se pudo guardar. Probá de nuevo.';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  async function delFam(slug) {
+    const f = invitadosRows().find((i) => i.slug === slug);
+    if (!f || !confirm(`¿Eliminar a "${f.familia}"? Su link deja de funcionar.`)) return;
+    const list = invitadosRows().filter((i) => i.slug !== slug);
+    try {
+      await saveSheet('Invitados', list);
+      data.invitados = list;
+      render();
+    } catch {
+      alert('No se pudo eliminar. Probá de nuevo.');
+    }
+  }
+
+  // ---------- grupos y horarios ----------
+  let grupos = [];
+  const pad = (n) => String(n).padStart(2, '0');
+  function toInput(v) {
+    const s = String(v || '');
+    if (!s) return '';
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)) return s;
+    const d = toDate(s);
+    return isNaN(d) ? '' : `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+  const famCount = (g) => invitadosRows().filter((i) => lower(i.grupo) === lower(g.grupo)).length;
+
+  function renderGrupos() {
+    grupos = (data.grupos || []).filter((g) => lower(g.grupo)).map((g) => ({ grupo: String(g.grupo).trim(), horaTexto: g.horaTexto || '', inicio: toInput(g.inicio), fin: toInput(g.fin), _saved: true }));
+    $('#grpRows').innerHTML = '';
+    grupos.forEach(addGrpRow);
+    $('#grpHint').innerHTML = `Las familias sin grupo ven el horario general de <code>config.js</code> (${esc(CONFIG.evento.horaTexto)}). El nombre de un grupo ya guardado no se puede cambiar: creá otro y reasigná las familias.`;
+  }
+
+  function addGrpRow(g) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input class="ci" name="grupo" placeholder="ej. amigos" aria-label="Nombre del grupo" ${g._saved ? 'readonly' : ''}></td>
+      <td class="item"><input class="ci" name="horaTexto" placeholder="ej. desde las 23 hs" aria-label="Texto del horario"></td>
+      <td><input class="ci" type="datetime-local" name="inicio" aria-label="Empieza"></td>
+      <td><input class="ci" type="datetime-local" name="fin" aria-label="Termina"></td>
+      <td class="num">${g._saved ? famCount(g) : 0}</td>
+      <td><button class="x" type="button" aria-label="Eliminar grupo">✕</button></td>`;
+    tr._g = g;
+    for (const k of ['grupo', 'horaTexto', 'inicio', 'fin']) tr.querySelector(`[name=${k}]`).value = g[k];
+    $('#grpRows').append(tr);
+  }
+
+  let grpT;
+  function saveGrupos() {
+    const el = $('#grpSaved');
+    const names = grupos.map((g) => lower(g.grupo)).filter(Boolean);
+    if (new Set(names).size !== names.length) { el.textContent = '⚠️ Hay dos grupos con el mismo nombre.'; return; }
+    el.textContent = 'Cambios sin guardar…';
+    clearTimeout(grpT);
+    grpT = setTimeout(async () => {
+      el.textContent = 'Guardando…';
+      const rows = grupos.filter((g) => g.grupo.trim()).map(({ grupo, horaTexto, inicio, fin }) => ({ grupo: grupo.trim(), horaTexto, inicio, fin }));
+      try {
+        await saveSheet('Grupos', rows);
+        data.grupos = rows;
+        grupos.forEach((g) => { if (g.grupo.trim()) g._saved = true; });
+        $$('#grpRows tr').forEach((tr) => { if (tr._g._saved) tr.querySelector('[name=grupo]').readOnly = true; });
+        const fams = familias();
+        renderResumen(fams);
+        renderInvitados(fams);
+        el.textContent = 'Guardado ✓';
+      } catch {
+        el.textContent = '⚠️ No se pudo guardar. Probá de nuevo.';
+      }
+    }, 1200);
+  }
+
+  $('#grpRows').addEventListener('input', (e) => {
+    e.target.closest('tr')._g[e.target.name] = e.target.value;
+    saveGrupos();
+  });
+  $('#grpRows').addEventListener('click', (e) => {
+    if (!e.target.closest('.x')) return;
+    const tr = e.target.closest('tr');
+    const n = tr._g._saved ? famCount(tr._g) : 0;
+    if (n && !confirm(`${n} familia(s) usan "${tr._g.grupo}". Si lo borrás van a ver el horario general. ¿Seguir?`)) return;
+    grupos.splice(grupos.indexOf(tr._g), 1);
+    tr.remove();
+    saveGrupos();
+  });
+  $('#addGrp').onclick = () => {
+    const g = { grupo: '', horaTexto: '', inicio: '', fin: '', _saved: false };
+    grupos.push(g);
+    addGrpRow(g);
+    $('#grpRows').lastElementChild.querySelector('[name=grupo]').focus();
+  };
 
   // ---------- compras ----------
   let items = [];
@@ -335,8 +536,7 @@
     saveT = setTimeout(async () => {
       $('#saved').textContent = 'Guardando…';
       try {
-        const res = await API.saveCompras(key, items.filter((it) => it.item.trim()));
-        if (!res.ok) throw new Error(res.error);
+        await saveSheet('Compras', items.filter((it) => it.item.trim()));
         data.compras = items;
         $('#saved').textContent = 'Guardado ✓';
       } catch {

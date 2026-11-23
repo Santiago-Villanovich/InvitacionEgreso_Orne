@@ -515,8 +515,8 @@
   let start;
   const gdate = (d) => d.toISOString().replace(/[-:]|\.\d{3}/g, '');
   function renderInfo() {
-  start = new Date(E.inicio);
-  const end = new Date(start.getTime() + E.duracionHoras * 3600e3);
+  start = toDate(E.inicio);
+  const end = E.fin ? toDate(E.fin) : new Date(start.getTime() + E.duracionHoras * 3600e3);
   const calUrl = 'https://calendar.google.com/calendar/render?' + new URLSearchParams({
     action: 'TEMPLATE', text: `Fiesta de egreso de ${E.homenajeada}`, dates: `${gdate(start)}/${gdate(end)}`, location: `${E.lugar}, ${E.direccion}`,
   });
@@ -655,9 +655,9 @@
           state.invitado = res.invitado;
           state.respuesta = res.respuesta;
           $('#greet').textContent = `¡Hola, ${res.invitado.familia}!`;
-          const g = CONFIG.grupos?.[String(res.invitado.grupo || '').trim().toLowerCase()];
+          const g = res.grupo;
           if (g) {
-            Object.assign(E, g);
+            for (const k of ['horaTexto', 'inicio', 'fin']) if (g[k]) E[k] = g[k];
             renderInfo();
             if (!$('#album').hidden) fillAlbum(false);
           }

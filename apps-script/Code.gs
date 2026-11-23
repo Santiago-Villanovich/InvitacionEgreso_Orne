@@ -1,8 +1,15 @@
 const HEADERS = {
   Invitados: ['slug', 'familia', 'miembros', 'grupo'],
   Respuestas: ['slug', 'fecha', 'nombre', 'asiste', 'mensaje'],
+  Grupos: ['grupo', 'horaTexto', 'inicio', 'fin'],
   Compras: ['item', 'xPersona', 'cantidad', 'precio', 'comprado'],
 };
+const EDITABLE = ['Invitados', 'Grupos', 'Compras'];
+
+function grupo_(nombre) {
+  const n = String(nombre || '').trim().toLowerCase();
+  return n ? rows_('Grupos').find((g) => String(g.grupo).trim().toLowerCase() === n) || null : null;
+}
 
 function setup() {
   Object.keys(HEADERS).forEach(sheet_);
@@ -66,11 +73,11 @@ function doGet(e) {
   try {
     if (p.action === 'invite') {
       const inv = invitado_(String(p.inv || '').trim().toLowerCase());
-      return json_(inv ? { ok: true, invitado: inv, respuesta: respuesta_(inv.slug) } : { ok: false, error: 'not_found' });
+      return json_(inv ? { ok: true, invitado: inv, respuesta: respuesta_(inv.slug), grupo: grupo_(inv.grupo) } : { ok: false, error: 'not_found' });
     }
     if (p.action === 'status') {
       if (!authorized_(p.key)) return json_({ ok: false, error: 'unauthorized' });
-      return json_({ ok: true, invitados: rows_('Invitados'), respuestas: rows_('Respuestas'), compras: rows_('Compras') });
+      return json_({ ok: true, invitados: rows_('Invitados'), grupos: rows_('Grupos'), respuestas: rows_('Respuestas'), compras: rows_('Compras') });
     }
     return json_({ ok: false, error: 'bad_action' });
   } catch (err) {
@@ -99,13 +106,15 @@ function doPost(e) {
       return json_({ ok: true });
     }
 
-    if (b.action === 'compras') {
+    if (b.action === 'save') {
       if (!authorized_(b.key)) return json_({ ok: false, error: 'unauthorized' });
-      const sh = sheet_('Compras');
+      if (EDITABLE.indexOf(b.sheet) < 0) return json_({ ok: false, error: 'bad_sheet' });
+      const head = HEADERS[b.sheet];
+      const sh = sheet_(b.sheet);
       sh.clearContents();
-      sh.appendRow(HEADERS.Compras);
-      const items = (b.items || []).slice(0, 300).map((i) => [safe_(i.item), safe_(i.xPersona), safe_(i.cantidad), safe_(i.precio), i.comprado ? 'Sí' : 'No']);
-      if (items.length) sh.getRange(2, 1, items.length, items[0].length).setValues(items);
+      sh.getRange(1, 1, 1, head.length).setValues([head]);
+      const vals = (b.rows || []).slice(0, 500).map((r) => head.map((k) => (typeof r[k] === 'boolean' ? (r[k] ? 'Sí' : 'No') : safe_(r[k]))));
+      if (vals.length) sh.getRange(2, 1, vals.length, head.length).setNumberFormat('@').setValues(vals);
       return json_({ ok: true });
     }
 
