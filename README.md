@@ -37,7 +37,10 @@ Sin `SCRIPT_URL` en `config.js` todo funciona en **modo demo**: los datos quedan
 - **Horario general**: `inicio`, `duracionHoras` y `horaTexto` de `evento` los ven las familias que no tienen grupo. Los horarios por grupo se manejan desde `/status → Grupos y horarios` (ver punto 3).
 - **`timeline`**: etapas de la historia. Para la foto: guardala en `img/` y poné `foto: 'img/salita.jpg'`.
 - **`figuritas`**: el orden del sobre. `tipo: 'foto'` lleva foto y título; `tipo: 'dato'` muestra un dato del evento (`fecha`, `lugar`, `dress`, `bebida`, `confirmar`). `brillante: true` le da efecto holográfico. Conviene que sea un número par.
-- **Fotos**: achicalas antes de subirlas (unos 1200 px del lado largo, JPG) para que cargue rápido en el celular.
+- **Fotos**: van en la carpeta `img/` y se referencian desde `config.js` en tres lugares: `portada` (las 2 polaroids del inicio), `timeline[].foto` y `figuritas[].foto` (las de `tipo: 'foto'`). Ej: `foto: 'img/salita.jpg'`.
+  - Achicalas antes (unos 1200 px del lado largo, JPG o WebP, menos de 300 KB), por ejemplo con squoosh.app.
+  - Nombres en minúscula, sin espacios ni tildes. GitHub distingue mayúsculas: `Foto.JPG` ≠ `foto.jpg`.
+  - Se recortan solas al centro: portada cuadrada, historia 4:5, figuritas verticales.
 
 > El repo va a ser **público**: no pongas nombres reales en `MOCK_INVITADOS`. Los invitados reales van en la planilla, que es privada.
 

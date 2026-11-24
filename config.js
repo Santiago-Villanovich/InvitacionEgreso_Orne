@@ -4,18 +4,18 @@ window.CONFIG = {
   BASE_URL: new URL('.', document.currentScript.src).href,
 
   evento: {
-    homenajeada: 'Nombre Apellido',
-    carrera: 'Lic. en Psicopedagogía',
+    homenajeada: 'Orne Battiato',
+    carrera: 'Prof. y Lic. en Psicopedagogía',
     inicio: '2026-12-12T21:00:00-03:00',
     duracionHoras: 6,
-    fechaTexto: 'Sábado 12 de diciembre',
-    horaTexto: '21 hs',
-    lugar: 'Salón Las Glicinas',
-    direccion: 'Av. Siempreviva 742, Buenos Aires',
-    mapsQuery: 'Obelisco, Buenos Aires',
-    dressCode: 'Colorido, brillante y cómodo para bailar',
-    confirmarHasta: '1 de diciembre',
-    bebidas: 'Si querés, sumá algo rico para tomar: gaseosa, vino, cerveza o lo que más te guste. ¡Brindamos juntos!',
+    fechaTexto: 'Viernes 18 de diciembre',
+    horaTexto: '20 hs',
+    lugar: 'Pura vida',
+    direccion: 'Rembrandt 3951',
+    mapsQuery: 'Rembrandt 3951 Francisco Alvarez, Buenos Aires',
+    dressCode: 'Comodo, traé malla y toallón por si te pinta un chapuzón',
+    confirmarHasta: '5 de diciembre',
+    bebidas: 'Si podes y querés, sumá algo rico para tomar: gaseosa, vino, cerveza o lo que más te guste. ¡Festejamos juntos!',
   },
 
   // Sólo para modo demo: con SCRIPT_URL los grupos se editan desde /status (hoja Grupos).
@@ -24,24 +24,32 @@ window.CONFIG = {
     { grupo: 'amigos', horaTexto: 'desde las 23 hs', inicio: '2026-12-12T23:00', fin: '2026-12-13T04:00' },
   ],
 
+  // Las dos polaroids de la portada: [izquierda, derecha]. Ej: ['img/chiquita.jpg', 'img/toga.jpg']
+  portada: ['img/bebe_chupaleta_0.jpg', 'img/jardin_pirueta_0.jpg'],
+
+  // Una entrada por etapa. Cada foto puede ser 'img/x.jpg' o { src: 'img/x.jpg', label: 'texto' }.
+  // Sin label: la primera foto lleva el nombre de la etapa y las demás van sin texto.
   timeline: [
-    { anio: '2003', etapa: 'Salita de 3', texto: 'Primer guardapolvo, primeras témperas y ya organizando a todos.', foto: '' },
-    { anio: '2008', etapa: 'Primaria', texto: 'Cuadernos forrados, letra cursiva y la mochila más pesada del grado.', foto: '' },
-    { anio: '2015', etapa: 'Secundaria', texto: 'Viaje de egresados, carpetas con stickers y la decisión: quiero ayudar a aprender.', foto: '' },
-    { anio: '2021', etapa: 'Facultad', texto: 'Parciales, prácticas, mates infinitos y muchas ganas.', foto: '' },
-    { anio: '2026', etapa: '¡Licenciada!', texto: 'Ahora sí: Psicopedagoga. Y lo quiero festejar con ustedes.', foto: '' },
+    { etapa: 'Jardín maternal', fotos: ['img/jardin_pilotin_1.jpg', 'img/jardin_retrato_1.jpg'] },
+    { etapa: 'Jardín de infantes', fotos: ['img/jardin_amarillo_2.jpg', 'img/jardin_pileta_2.jpg'] },
+    { etapa: 'Primaria', fotos: ['img/primaria_patito_3.jpg','img/primaria_baile_3.jpg' ] },
+    { etapa: 'Secundaria', fotos: ['img/secundaria_egreso_globos_4.jpg','img/secundaria_egreso_vestido_4.jpg'] },
+    { etapa: 'Universidad', fotos: ['img/universidad_5.jpg'] },
   ],
 
-  // tipo 'foto' usa foto/titulo; tipo 'dato' toma el valor de evento: fecha | lugar | dress | bebida | confirmar
+  // tipo 'foto': foto + titulo (+ icono opcional).
+  // tipo 'dato': muestra un dato de "evento" (fecha | lugar | dress | bebida | confirmar) sobre la foto de fondo.
+  //   Opcionales: titulo (franja de abajo), texto (reemplaza el dato), icono.
+  // Íconos: fecha, lugar, dress, bebida, confirmar, corazon, flor, estrella, birrete
   figuritas: [
-    { tipo: 'foto', titulo: 'Salita de 3', foto: '' },
-    { tipo: 'dato', dato: 'fecha' },
-    { tipo: 'dato', dato: 'bebida' },
-    { tipo: 'dato', dato: 'lugar' },
-    { tipo: 'foto', titulo: 'Viaje de egresados', foto: '' },
-    { tipo: 'dato', dato: 'dress' },
-    { tipo: 'foto', titulo: 'Último final', foto: '', brillante: true },
-    { tipo: 'dato', dato: 'confirmar', brillante: true },
+    { tipo: 'foto', titulo: '', icono: 'corazon', foto: 'img/jardin_pijama_parque.jpg' },
+    { tipo: 'dato', dato: 'fecha', foto: 'img/bg_fecha.jpeg' },
+    { tipo: 'dato', dato: 'bebida', foto: 'img/bg_bebida.jpg' },
+    { tipo: 'dato', dato: 'lugar', foto: 'img/bg_lugar.jpeg' },
+    { tipo: 'foto', titulo: '', icono: 'flor', foto: 'img/secundaria_parque.jpg' },
+    { tipo: 'dato', dato: 'dress', foto: 'img/bg_desscode.jpg' },
+    { tipo: 'dato', dato: 'confirmar', foto: 'img/bg_confirmacion.jpg', brillante: true },
+    { tipo: 'foto', titulo: 'Llego el dia Abu', foto: 'img/jardin_ceci.jpg', brillante: true },
   ],
 
   MOCK_INVITADOS: [

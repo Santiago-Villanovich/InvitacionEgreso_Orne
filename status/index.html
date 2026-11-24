@@ -303,7 +303,7 @@
     const rows = fams.filter((f) => (!st || f.estado === st) && (!q || (f.familia + ' ' + f.grupo + ' ' + f.miembros.join(' ')).toLowerCase().includes(q)));
     $('#invRows').innerHTML = rows.map((f) => {
       const pill = f.estado === 'ok' ? `${f.van.length}/${f.miembros.length} vienen` : LABEL[f.estado];
-      const wa = 'https://wa.me/?text=' + encodeURIComponent(`¡Hola ${f.familia}! 🎓 Me recibí y quiero festejarlo con ustedes. Abrí tu invitación y confirmá acá: ${f.link}`);
+      const wa = 'https://wa.me/?text=' + encodeURIComponent(`¡Hola ${f.familia}! 🎓 Me recibo y quiero que lo festejemos juntos. Abrí tu invitación y confirmá acá: ${f.link}`);
       return `<tr>
         <td><b>${esc(f.familia)}</b><br><small class="muted">${esc(f.slug)}${f.grupo ? ' · ' + esc(f.grupo) : ''}</small></td>
         <td>${f.miembros.map((m) => { const x = f.r?.miembros.find((y) => y.nombre === m); return `${x ? (x.asiste ? '✅' : '❌') : '⏳'} ${esc(m)}`; }).join('<br>')}</td>

@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>¡Me recibí! · Invitación</title>
+<title>¡Me recibo! · Invitación</title>
 <meta name="description" content="Abrí tu sobre de figuritas y confirmá tu asistencia a la fiesta de egreso.">
-<meta property="og:title" content="¡Me recibí! Estás invitado/a 💌">
+<meta property="og:title" content="¡Me recibo! Estás invitado/a 💌">
 <meta property="og:description" content="Abrí tu sobre de figuritas y confirmá tu asistencia.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#f7f0e3">
@@ -17,12 +17,12 @@
   /* ---------- hero ---------- */
   .hero { position: relative; min-height: 100svh; display: grid; place-items: center; text-align: center; overflow: hidden; padding: 72px 16px 56px; }
   .burst {
-    position: absolute; inset: -20%;
-    background: repeating-conic-gradient(from 3deg at 50% 52%,
+    position: absolute; left: 50%; top: 52%; width: 200vmax; height: 200vmax; margin: -100vmax 0 0 -100vmax;
+    background: repeating-conic-gradient(from 3deg,
       #e9a3b8 0 5deg, #f6d38b 0 10deg, #9fc7b2 0 15deg, #c7b4e3 0 20deg, #f3b28f 0 25deg, #a9c9e8 0 30deg, #f7f0e3 0 33deg);
     opacity: .55;
-    -webkit-mask-image: radial-gradient(circle at 50% 52%, transparent 0 22%, #000 48%, transparent 78%);
-            mask-image: radial-gradient(circle at 50% 52%, transparent 0 22%, #000 48%, transparent 78%);
+    -webkit-mask-image: radial-gradient(circle, transparent 0 12vmax, #000 34vmax, #000 60vmax, transparent 90vmax);
+            mask-image: radial-gradient(circle, transparent 0 12vmax, #000 34vmax, #000 60vmax, transparent 90vmax);
     animation: spin 120s linear infinite;
   }
   @keyframes spin { to { rotate: 360deg; } }
@@ -39,7 +39,7 @@
   .scroll-hint { margin-top: 2.2rem; font-weight: 600; color: var(--ink-2); animation: bob 1.8s ease-in-out infinite; }
   @keyframes bob { 50% { translate: 0 6px; } }
   .hero-pol { position: absolute; z-index: 1; width: clamp(110px, 18vw, 200px); background: #fff; padding: 8px 8px 30px; box-shadow: var(--shadow); }
-  .hero-pol .ph { aspect-ratio: 1; font-size: 1rem; }
+  .hero-pol .ph, .hero-pol img { aspect-ratio: 1; font-size: 1rem; width: 100%; object-fit: cover; }
   .hero-pol .tape { top: -12px; left: 50%; margin-left: -46px; rotate: -4deg; }
   .disco {
     position: absolute; z-index: 1; width: clamp(80px, 13vw, 140px); aspect-ratio: 1; border-radius: 50%;
@@ -64,19 +64,14 @@
   /* ---------- timeline ---------- */
   .timeline { position: relative; max-width: 1000px; margin: 0 auto; padding: 12vh 16px 6vh; }
   .tl-line { position: absolute; left: 50%; top: 28vh; bottom: 10vh; border-left: 3px dashed var(--hot); opacity: .45; }
-  .tl-item { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 6vw, 72px); align-items: center; margin: 12vh 0; }
-  .tl-item > .star.dot { left: 50%; top: 50%; margin: -17px 0 0 -17px; --s: 34px; --c: var(--hot); }
-  .tl-item.alt .polaroid { order: 2; }
-  .polaroid { position: relative; justify-self: center; width: min(100%, 300px); background: #fff; padding: 12px 12px 54px; box-shadow: var(--shadow); rotate: var(--rot); translate: 0 var(--py, 0); }
-  .polaroid img { aspect-ratio: 4/5; object-fit: cover; width: 100%; }
-  .polaroid figcaption { position: absolute; left: 0; right: 0; bottom: 10px; text-align: center; font-family: var(--hand); font-size: 1.6rem; }
+  .tl-item { position: relative; display: flex; justify-content: flex-start; padding: 0 3%; }
+  .tl-item.alt { justify-content: flex-end; }
+  .tl-item + .tl-item { margin-top: -12%; }
+  .polaroid { position: relative; flex: none; margin: 0; width: min(42%, 320px); background: #fff; padding: 12px 12px 56px; box-shadow: var(--shadow); rotate: var(--rot); translate: 0 var(--py, 0); }
+  .polaroid.nocap { padding-bottom: 30px; }
+  .polaroid img { width: 100%; max-height: 460px; object-fit: cover; }
+  .polaroid figcaption { position: absolute; left: 0; right: 0; bottom: 10px; text-align: center; font-family: var(--hand); font-weight: 700; font-size: 1.7rem; line-height: 1.1; }
   .polaroid .tape { top: -13px; left: 50%; margin-left: -46px; rotate: var(--tr, -3deg); }
-  .tl-note { position: relative; background: #fff8ec; padding: 22px 24px 24px; border-radius: 4px; box-shadow: var(--shadow); rotate: var(--rot); translate: 0 var(--py, 0); max-width: 380px; }
-  .tl-item.alt .tl-note { justify-self: end; }
-  .tl-note::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(transparent 0 27px, rgba(74,168,255,.22) 27px 28px); border-radius: inherit; pointer-events: none; }
-  .tl-year { font-size: 1.9rem; display: block; margin-bottom: .2em; }
-  .tl-note h3 { font-family: 'Shrikhand', serif; font-weight: 400; font-size: 1.6rem; margin: 0 0 .25em; color: var(--hot); }
-  .tl-note p { margin: 0; position: relative; }
   .tl-item .star.float { translate: 0 var(--py, 0); }
   .reveal { opacity: 0; transform: translateY(46px) scale(.96); transition: opacity .8s, transform .9s cubic-bezier(.2,.8,.2,1); }
   .reveal.in { opacity: 1; transform: none; }
@@ -133,10 +128,31 @@
   .fig-art .ph { aspect-ratio: auto; font-size: 9cqw; }
   .fig-n { position: absolute; z-index: 2; top: 2.5cqw; left: 2.5cqw; width: 18cqw; height: 18cqw; border-radius: 50%; background: var(--ink); color: var(--yellow); display: grid; place-items: center; font-family: var(--display); font-size: 8cqw; border: 1.2cqw solid #fff; }
   .fig-name { margin-top: 4cqw; background: var(--c2, var(--hot)); color: #fff; font-family: var(--display); font-size: 7cqw; line-height: 1.1; padding: 3cqw 2cqw; border-radius: 3cqw; text-transform: uppercase; }
-  .fig--dato .fig-art { background: radial-gradient(circle, rgba(255,255,255,.5) 1.2cqw, transparent 1.5cqw) 0 0/9cqw 9cqw, var(--c, var(--yellow)); align-content: center; justify-items: center; gap: 2cqw; padding: 6cqw; color: var(--ink); }
-  .fig-ico { font-size: 22cqw; line-height: 1; }
-  .fig-val { font-weight: 800; font-size: 8.5cqw; line-height: 1.15; }
-  .fig-val small { display: block; font-weight: 600; font-size: .72em; margin-top: 1.5cqw; }
+  .fig--dato .fig-art {
+    place-items: center; padding: 10cqw 7cqw 8cqw; color: var(--ink);
+    background: repeating-conic-gradient(from 4deg at 50% 55%, var(--c) 0 9deg, color-mix(in srgb, var(--c) 45%, #fff) 9deg 18deg);
+  }
+  .fig-note {
+    position: relative; width: 108%; padding: 9cqw 5cqw 7cqw; rotate: -2.5deg; text-align: center;
+    background: #fffdf6 repeating-linear-gradient(transparent 0 7.6cqw, rgba(74,168,255,.28) 7.6cqw 8cqw);
+    box-shadow: 0 1.2cqw 2.5cqw rgba(42,33,48,.22);
+  }
+  .fig-note::before { content: ""; position: absolute; top: -3.5cqw; left: 50%; width: 30cqw; height: 7cqw; margin-left: -15cqw; rotate: 4deg; background: rgba(255,111,174,.6); }
+  .fig--dato .fig-art.has-bg { background: var(--bg) center / cover; }
+  .fig--dato .fig-art.has-bg { place-items: end center; padding: 0 6cqw 6cqw; }
+  .fig--dato .fig-art.has-bg::before { content: ""; position: absolute; inset: 45% 0 0; background: linear-gradient(180deg, transparent, rgba(42,33,48,.35)); }
+  .has-bg .fig-note { width: 96%; padding: 5cqw 4cqw 4cqw; rotate: -3deg; background-image: none; }
+  .has-bg .fig-note::before { top: -3cqw; width: 22cqw; height: 5.5cqw; margin-left: -11cqw; }
+  .has-bg .fig-ico { top: -10cqw; right: -5cqw; width: 18cqw; height: 18cqw; }
+  .has-bg .fig-val { font-size: 10.5cqw; }
+  .has-bg .fig-val.long { font-size: 8.4cqw; }
+  .has-bg .fig-val small { margin-top: .5cqw; }
+  .fig-ico { position: absolute; top: -9cqw; right: -6cqw; width: 21cqw; height: 21cqw; padding: 2.6cqw; border-radius: 50%; background: #fff; rotate: 12deg; box-shadow: 0 1cqw 2cqw rgba(42,33,48,.25); }
+  .fig-ico svg, .fig-name svg { display: block; width: 100%; height: 100%; }
+  .fig-name svg { display: inline-block; width: 1.5em; height: 1.5em; vertical-align: -.35em; margin: -.2em .15em; }
+  .fig-val { display: block; font-family: var(--hand); font-weight: 700; font-size: 14.5cqw; line-height: .95; }
+  .fig-val.long { font-size: 11.5cqw; }
+  .fig-val small { display: block; font-size: .7em; font-weight: 500; margin-top: 1.5cqw; color: var(--ink-2); }
   .fig--shiny::after { content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; background: linear-gradient(115deg, transparent 20%, #ff6fae 35%, #ffd23f 45%, #4cc38a 55%, #4aa8ff 65%, transparent 80%) 0 0/250% 100%; animation: holo 3.5s linear infinite; }
   @keyframes holo { to { background-position: -250% 0; } }
 
@@ -171,7 +187,8 @@
 
   /* ---------- info ---------- */
   .info-sec { padding: 10vh 16px; }
-  .info-grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); max-width: 1000px; margin: 0 auto; }
+  .info-grid { display: grid; gap: 22px; grid-template-columns: 1fr; max-width: 900px; margin: 0 auto; }
+  @media (min-width: 640px) { .info-grid { grid-template-columns: 1fr 1fr; } }
   .info-card { position: relative; background: #fff; border: 2px solid var(--ink); border-radius: 16px; padding: 24px; box-shadow: 4px 4px 0 var(--ink); rotate: var(--r, 0deg); }
   .info-card h3 { margin: 0 0 .5em; font-family: var(--display); font-weight: 400; font-size: 1rem; letter-spacing: .06em; color: var(--hot); }
   .info-card .big { font-family: 'Shrikhand', serif; font-size: 1.7rem; line-height: 1.15; margin: 0 0 .3em; }
@@ -218,12 +235,11 @@
   @media (max-width: 700px) {
     .hero { padding-bottom: 170px; }
     .hero-pol { width: 104px; }
-    .tl-line { left: 22px; }
-    .tl-item { grid-template-columns: 1fr; padding-left: 34px; gap: 22px; margin: 9vh 0; }
-    .tl-item.alt .polaroid { order: 0; }
-    .tl-item > .star.dot { left: 22px; top: 40px; }
-    .tl-item.alt .tl-note { justify-self: start; }
-    .polaroid { justify-self: start; width: min(88%, 280px); }
+    .tl-item { padding: 0; }
+    .tl-item + .tl-item { margin-top: 9vh; }
+    .polaroid { width: 64%; padding: 8px 8px 44px; }
+    .polaroid.nocap { padding-bottom: 22px; }
+    .polaroid figcaption { font-size: 1.35rem; bottom: 8px; }
     .note { padding: 36px 18px 28px 48px; }
     .note::before { left: 32px; }
   }
@@ -243,7 +259,7 @@
   <span class="star" style="--s:18px;--c:var(--lilac);top:40%;right:4%" data-speed=".5"></span>
   <div class="hero-inner">
     <p class="greet" id="greet">¡Hola!</p>
-    <h1 data-ransom="¡ME RECIBÍ!"></h1>
+    <h1 data-ransom="¡ME RECIBO!"></h1>
     <p class="name" id="heroName"></p>
     <p class="strip" id="heroCarrera"></p>
     <p class="scroll-hint">Deslizá para ver la historia ↓</p>
@@ -252,7 +268,7 @@
 
 <main>
   <section class="timeline" id="historia" aria-label="Historia">
-    <h2 class="sec-title" data-ransom="De salita a licenciada"></h2>
+    <h2 class="sec-title" data-ransom="Un camino lleno de aprendizajes"></h2>
     <div class="tl-line"></div>
     <div id="tlItems"></div>
   </section>
@@ -334,22 +350,26 @@
 
   // ---------- timeline ----------
   const ph = (label, i) => `<div class="ph" style="--c:${COLORS[i % COLORS.length]}"><b>📷</b>${esc(label)}</div>`;
-  $('#tlItems').innerHTML = CONFIG.timeline.map((t, i) => `
-    <article class="tl-item${i % 2 ? ' alt' : ''}">
-      <span class="star dot"></span>
-      <figure class="polaroid reveal" style="--rot:${i % 2 ? 4 : -4}deg" data-speed=".06">
-        <span class="tape" style="--tr:${i % 2 ? 5 : -5}deg"></span>
-        ${t.foto ? `<img src="${esc(t.foto)}" alt="${esc(t.etapa)}" loading="lazy">` : ph('foto · ' + t.etapa, i)}
-        <figcaption>${esc(t.etapa)}</figcaption>
+  $$('.hero-pol').forEach((el, i) => {
+    const src = CONFIG.portada?.[i];
+    if (src) el.querySelector('.ph').outerHTML = `<img src="${esc(src)}" alt="">`;
+  });
+  const fotosTl = CONFIG.timeline.flatMap((t) => (t.fotos || []).map((f, j) => {
+    const foto = typeof f === 'string' ? { src: f } : f;
+    return { ...foto, alt: t.etapa, label: foto.label ?? (j === 0 ? t.etapa : '') };
+  }));
+  $('#tlItems').innerHTML = fotosTl.map((f, i) => {
+    const izq = i % 2 === 0;
+    const rot = izq ? -3 - (i % 3) : 3 + (i % 3);
+    return `<article class="tl-item${izq ? '' : ' alt'}">
+      <figure class="polaroid reveal${f.label ? '' : ' nocap'}" style="--rot:${rot}deg" data-speed="${izq ? '.05' : '.12'}">
+        <span class="tape" style="--tr:${izq ? -5 : 5}deg"></span>
+        <img src="${esc(f.src)}" alt="${esc(f.label || f.alt)}" loading="lazy">
+        ${f.label ? `<figcaption>${esc(f.label)}</figcaption>` : ''}
       </figure>
-      <div class="tl-note reveal" style="--rot:${i % 2 ? -2 : 2}deg" data-speed="-.08">
-        <span class="tl-year" data-ransom="${esc(t.anio)}"></span>
-        <h3>${esc(t.etapa)}</h3>
-        <p>${esc(t.texto)}</p>
-      </div>
-      <span class="star float" style="--s:${18 + (i * 7) % 16}px;--c:${COLORS[(i + 3) % COLORS.length]};top:-6%;${i % 2 ? 'left' : 'right'}:6%" data-speed=".35"></span>
-    </article>`).join('');
-  ransomAll($('#tlItems'));
+      ${i % 3 === 1 ? `<span class="star float" style="--s:${18 + (i * 7) % 16}px;--c:${COLORS[(i + 3) % COLORS.length]};top:10%;${izq ? 'right' : 'left'}:12%" data-speed=".35"></span>` : ''}
+    </article>`;
+  }).join('');
 
   // ---------- parallax + reveal ----------
   const px = $$('[data-speed]');
@@ -372,12 +392,24 @@
   $$('.reveal').forEach((el) => io.observe(el));
 
   // ---------- figuritas ----------
+  const ICONS = {
+    fecha: '<path d="M7 15a5 5 0 0 1 5-5h24a5 5 0 0 1 5 5v21a5 5 0 0 1-5 5H12a5 5 0 0 1-5-5z" fill="#fff"/><path d="M7 15a5 5 0 0 1 5-5h24a5 5 0 0 1 5 5v4H7z" fill="#ff6fae"/><path d="M16 6v8M32 6v8"/><path d="M24 36s-7-4.3-7-8.6a3.6 3.6 0 0 1 7-1.4 3.6 3.6 0 0 1 7 1.4c0 4.3-7 8.6-7 8.6z" fill="#ec1c7f"/>',
+    lugar: '<path d="M24 43s13-12.5 13-23a13 13 0 0 0-26 0c0 10.5 13 23 13 23z" fill="#4aa8ff"/><circle cx="24" cy="20" r="5" fill="#ffd23f"/>',
+    dress: '<path d="M16 5l3 8-2 9-10 19h34L31 22l-2-9 3-8c-2 4-14 4-16 0z" fill="#ff6fae"/><path d="M17 22h14"/><circle cx="24" cy="31" r="1.6" fill="#fff" stroke="none"/><circle cx="18" cy="35" r="1.6" fill="#fff" stroke="none"/><circle cx="30" cy="35" r="1.6" fill="#fff" stroke="none"/><path d="M40 6l1.5 3.5L45 11l-3.5 1.5L40 16l-1.5-3.5L35 11l3.5-1.5z" fill="#ffd23f"/>',
+    bebida: '<g transform="rotate(-14 15 24)"><path d="M8 12h14l-2.5 11a4.5 4.5 0 0 1-9 0z" fill="#ffd23f"/><path d="M15 28v10M10 38h10"/></g><g transform="rotate(14 33 24)"><path d="M26 12h14l-2.5 11a4.5 4.5 0 0 1-9 0z" fill="#ff8c42"/><path d="M33 28v10M28 38h10"/></g><path d="M24 3v4M19 5l2 3M29 5l-2 3"/>',
+    confirmar: '<rect x="6" y="13" width="36" height="26" rx="3" fill="#fff"/><path d="M6 15l18 13 18-13"/><circle cx="24" cy="28" r="6.5" fill="#ec1c7f"/><path d="M24 31.5s-3.6-2.2-3.6-4.6a1.8 1.8 0 0 1 3.6-.6 1.8 1.8 0 0 1 3.6.6c0 2.4-3.6 4.6-3.6 4.6z" fill="#fff" stroke="none"/>',
+    corazon: '<path d="M24 41S6 30 6 18a9 9 0 0 1 18-3 9 9 0 0 1 18 3c0 12-18 23-18 23z" fill="#ff6fae"/><path d="M14 16a4 4 0 0 1 4-3" stroke="#fff"/>',
+    flor: '<circle cx="24" cy="11" r="7" fill="#a98bff"/><circle cx="36" cy="20" r="7" fill="#a98bff"/><circle cx="31" cy="34" r="7" fill="#a98bff"/><circle cx="17" cy="34" r="7" fill="#a98bff"/><circle cx="12" cy="20" r="7" fill="#a98bff"/><circle cx="24" cy="23" r="6" fill="#ffd23f"/>',
+    estrella: '<path d="M24 4l5.6 12.4 13.4 1.4-10 9.2 2.8 13.2L24 33.4l-11.8 6.8 2.8-13.2-10-9.2 13.4-1.4z" fill="#ffd23f"/>',
+    birrete: '<path d="M4 18l20-9 20 9-20 9z" fill="#2a2130"/><path d="M12 22v9c0 3 5.4 5.5 12 5.5s12-2.5 12-5.5v-9" fill="#4aa8ff"/><path d="M40 20v12"/><circle cx="40" cy="34" r="2.5" fill="#ffd23f"/>',
+  };
+  const icon = (name) => (ICONS[name] ? `<svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="#2a2130" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg>` : '');
   const datos = () => ({
-    fecha: { ico: '📅', titulo: 'Cuándo', val: `${esc(E.fechaTexto)}<small>${esc(E.horaTexto)}</small>` },
-    lugar: { ico: '📍', titulo: 'Dónde', val: `${esc(E.lugar)}<small>${esc(E.direccion)}</small>` },
-    dress: { ico: '✨', titulo: 'Dress code', val: esc(E.dressCode) },
-    bebida: { ico: '🥂', titulo: 'Para brindar', val: `¿Traés algo para tomar?<small>gaseosa, vino, cerveza… ¡lo que gustes!</small>` },
-    confirmar: { ico: '💌', titulo: 'Confirmá', val: `antes del<small>${esc(E.confirmarHasta)}</small>` },
+    fecha: { titulo: 'Cuándo', val: `${esc(E.fechaTexto)}<small>${esc(E.horaTexto)}</small>` },
+    lugar: { titulo: 'Dónde', val: `${esc(E.lugar)}<small>${esc(E.direccion)}</small>` },
+    dress: { titulo: 'Dress code', val: esc(E.dressCode) },
+    bebida: { titulo: 'Para brindar', val: `¿Traés algo para tomar?<small>gaseosa, vino, cerveza… ¡lo que gustes!</small>` },
+    confirmar: { titulo: 'Confirmá', val: `antes del<small>${esc(E.confirmarHasta)}</small>` },
   });
   function figHTML(f, i) {
     const c = COLORS[i % COLORS.length];
@@ -385,13 +417,17 @@
     const n = String(i + 1).padStart(2, '0');
     if (f.tipo === 'dato') {
       const d = datos()[f.dato];
+      const val = f.texto ? esc(f.texto) : d.val;
+      const long = val.replace(/<[^>]+>/g, '').length > 38;
+      const bg = f.foto ? ` has-bg" style="--bg:url('${esc(f.foto)}')` : '';
       return `<div class="fig fig--dato${f.brillante ? ' fig--shiny' : ''}" style="--c:${c};--c2:${c2}"><span class="fig-n">${n}</span>
-        <div class="fig-art"><span class="fig-ico">${d.ico}</span><span class="fig-val">${d.val}</span></div>
-        <div class="fig-name">${d.titulo}</div></div>`;
+        <div class="fig-art${bg}"><div class="fig-note"><span class="fig-ico">${icon(f.icono || f.dato)}</span><span class="fig-val${long ? ' long' : ''}">${val}</span></div></div>
+        <div class="fig-name">${esc(f.titulo ?? d.titulo)}</div></div>`;
     }
+    const titulo = f.titulo || '';
     return `<div class="fig${f.brillante ? ' fig--shiny' : ''}" style="--c2:${c2}"><span class="fig-n">${n}</span>
-      <div class="fig-art">${f.foto ? `<img src="${esc(f.foto)}" alt="${esc(f.titulo)}">` : ph(f.titulo, i)}</div>
-      <div class="fig-name">${esc(f.titulo)}</div></div>`;
+      <div class="fig-art">${f.foto ? `<img src="${esc(f.foto)}" alt="${esc(titulo)}">` : ph(titulo, i)}</div>
+      ${titulo || f.icono ? `<div class="fig-name">${icon(f.icono)}${esc(titulo)}</div>` : ''}</div>`;
   }
 
   // ---------- sobre y mazo ----------
@@ -437,8 +473,7 @@
     deck.hidden = true;
     bar.hidden = true;
     hint.textContent = '¡Completaste el sobre! 🎉';
-    $('#toAlbum').hidden = false;
-    $('#toAlbum').focus({ preventScroll: true });
+    setTimeout(() => $('#toAlbum').click(), reducedMotion ? 0 : 700);
   }
   $('#nextBtn').addEventListener('click', () => next(1));
 

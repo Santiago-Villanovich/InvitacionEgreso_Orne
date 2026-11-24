@@ -26,6 +26,7 @@ const RANSOM_COLORS = [
   ['#4aa8ff', '#fff'], ['#4cc38a', '#2a2130'], ['#ff8c42', '#fff'], ['#a98bff', '#fff'],
   ['#f3e6cc', '#2a2130'], ['#ec1c7f', '#ffd23f'], ['transparent', '#2a2130'],
 ];
+const DARK = '#2a2130';
 
 function ransom(el, text = el.dataset.ransom ?? el.textContent) {
   const rnd = seeded(text);
@@ -33,13 +34,20 @@ function ransom(el, text = el.dataset.ransom ?? el.textContent) {
   el.textContent = '';
   el.setAttribute('aria-label', text);
   el.classList.add('ransom');
+  let prev = null;
+  let sinceDark = 2;
   for (const word of text.split(' ')) {
     const w = document.createElement('span');
     w.className = 'r-word';
     w.setAttribute('aria-hidden', 'true');
     for (const ch of word) {
       const s = document.createElement('span');
-      const [bg, fg] = pick(RANSOM_COLORS);
+      let c;
+      do c = pick(RANSOM_COLORS);
+      while (c === prev || (c[0] === DARK && sinceDark < 5));
+      sinceDark = c[0] === DARK ? 0 : sinceDark + 1;
+      prev = c;
+      const [bg, fg] = c;
       s.className = 'r';
       s.textContent = ch;
       s.style.cssText = `font-family:'${pick(RANSOM_FONTS)}';background:${bg};color:${fg};rotate:${(rnd() * 12 - 6).toFixed(1)}deg;font-size:${(0.85 + rnd() * 0.3).toFixed(2)}em`;
