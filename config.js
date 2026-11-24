@@ -49,7 +49,7 @@ window.CONFIG = {
     { tipo: 'foto', titulo: '', icono: 'flor', foto: 'img/secundaria_parque.jpg' },
     { tipo: 'dato', dato: 'dress', foto: 'img/bg_desscode.jpg' },
     { tipo: 'dato', dato: 'confirmar', foto: 'img/bg_confirmacion.jpg', brillante: true },
-    { tipo: 'foto', titulo: 'Llego el dia Abu', foto: 'img/jardin_ceci.jpg', brillante: true },
+    { tipo: 'foto', titulo: 'Llegó el día Abu', foto: 'img/jardin_ceci.jpg', brillante: true },
   ],
 
   MOCK_INVITADOS: [
