@@ -37,7 +37,8 @@
   .list li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--line); }
   .list li:last-child { border-bottom: 0; }
   .msg { padding: 10px 0; border-bottom: 1px dashed var(--line); }
-  .msg p { margin: 0; font-family: var(--hand); font-size: 1.35rem; line-height: 1.2; }
+  .msgs { max-height: 420px; overflow-y: auto; }
+  .msg p { margin: 0; font-family: var(--hand); font-size: 1.35rem; line-height: 1.2; white-space: pre-wrap; }
   .msg small { color: var(--ink-2); }
   .tablewrap { overflow-x: auto; margin: 0 -18px; padding: 0 18px; }
   table { width: 100%; border-collapse: collapse; font-size: .92rem; }
@@ -290,7 +291,7 @@
         </div>
         <div class="card">
           <h2>MENSAJES</h2>
-          ${msgs.length ? msgs.map((f) => `<div class="msg"><p>“${esc(f.r.mensaje)}”</p><small>— ${esc(f.familia)}</small></div>`).join('') : '<p class="muted">Todavía no hay mensajes.</p>'}
+          ${msgs.length ? `<div class="msgs">${msgs.map((f) => `<div class="msg"><p>“${esc(f.r.mensaje)}”</p><small>— ${esc(f.familia)}</small></div>`).join('')}</div>` : '<p class="muted">Todavía no hay mensajes.</p>'}
         </div>
       </div>`;
   }
@@ -548,6 +549,7 @@
   $('#buyRows').addEventListener('input', (e) => {
     const tr = e.target.closest('tr');
     const k = e.target.name;
+    if (e.target.classList.contains('n')) e.target.value = e.target.value.replace(/[^\d.,]/g, '');
     tr._it[k] = k === 'comprado' ? e.target.checked : e.target.value;
     updateRow(tr);
     totals();

@@ -613,7 +613,7 @@
       box.innerHTML = `
         <p>${van ? `¡Genial, ${esc(familia)}! Los esperamos 🎉` : `Gracias por avisar, ${esc(familia)}. ¡Los vamos a extrañar!`}</p>
         <ul class="summary">${r.miembros.map((m) => `<li>${m.asiste ? '✅' : '❌'} ${esc(m.nombre)}</li>`).join('')}</ul>
-        ${r.mensaje ? `<p class="hand" style="font-size:1.4rem">“${esc(r.mensaje)}”</p>` : ''}
+        ${r.mensaje ? `<p class="hand" style="font-size:1.4rem;white-space:pre-wrap">“${esc(r.mensaje)}”</p>` : ''}
         ${van ? `<p class="muted">🥂 ${esc(E.bebidas)}</p>` : ''}
         <button class="btn alt sm" id="edit">Cambiar respuesta</button>`;
       $('#edit').onclick = () => { state.editing = true; renderRsvp(); };
